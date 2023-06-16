@@ -3,7 +3,7 @@ buildscript {
         gradleVersion = '8.0.2'
         kotlinVersion = '1.7.20'
         kotlinBomVersion = '1.8.0'
-        coreVersion = '1.10.1'
+        coreVersion = '1.8.0'
         lifecycleVersion = '2.6.1'
         composeVersion = '1.7.2'
         composeBomVersion = '2022.10.00'

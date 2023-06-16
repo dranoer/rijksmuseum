@@ -1,44 +1,44 @@
 package com.dranoer.rijksmuseum.data.remote.model
 
-import kotlinx.serialization.SerialName
+import com.google.gson.annotations.SerializedName
 
 data class ArtResponse(
-    @SerialName("artObjects")
+    @SerializedName("artObjects")
     val artObjects: List<ArtObject>,
 )
 
 data class ArtObject(
-    @SerialName("id")
+    @SerializedName("id")
     val id: String,
 
-    @SerialName("principalOrFirstMaker")
-    val artist: String,
+    @SerializedName("principalOrFirstMaker")
+    val artist: String? = null,
 
-    @SerialName("title")
+    @SerializedName("title")
     val title: String? = null,
 
-    @SerialName("longTitle")
+    @SerializedName("longTitle")
     val longTitle: String? = null,
 
-    @SerialName("webImage")
+    @SerializedName("webImage")
     val image: Image? = null,
 
-    @SerialName("headerImage")
+    @SerializedName("headerImage")
     val headerImage: HeaderImage? = null,
 )
 
 data class Image(
-    @SerialName("guid")
+    @SerializedName("guid")
     val guid: String,
 
-    @SerialName("url")
+    @SerializedName("url")
     val url: String,
 )
 
 data class HeaderImage(
-    @SerialName("guid")
+    @SerializedName("guid")
     val guid: String,
 
-    @SerialName("url")
+    @SerializedName("url")
     val url: String,
 )

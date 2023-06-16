@@ -12,10 +12,12 @@ buildscript {
         junitVersion = '4.13.2'
         testExtVersion = '1.1.5'
         espressoVersion = '3.5.1'
+        ktlintVersion = '10.2.0'
     }
 
     dependencies {
         classpath "com.google.dagger:hilt-android-gradle-plugin:$daggerVersion"
+        classpath "org.jlleitschuh.gradle:ktlint-gradle:$ktlintVersion"
     }
 }
 

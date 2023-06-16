@@ -3,14 +3,15 @@ package com.dranoer.rijksmuseum
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.dranoer.rijksmuseum.ui.screen.OverviewScreen
 import com.dranoer.rijksmuseum.ui.theme.RijksmuseumTheme
+import com.dranoer.rijksmuseum.ui.util.Route.Overview
+import com.dranoer.rijksmuseum.ui.util.Route.Overview.route
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -19,30 +20,29 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             RijksmuseumTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    Greeting("Android")
-                }
+                AppScreen()
             }
         }
     }
 }
 
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
+private fun AppScreen() {
+    val navController = rememberNavController()
+    NavHost(
+        navController = navController,
+        startDestination = route,
+    ) {
+        composable(route = Overview.route) {
+            OverviewScreen()
+        }
+    }
 }
 
 @Preview(showBackground = true)
 @Composable
-fun GreetingPreview() {
+private fun AppPreview() {
     RijksmuseumTheme {
-        Greeting("Android")
+        AppScreen()
     }
 }

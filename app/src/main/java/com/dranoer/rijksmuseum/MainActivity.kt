@@ -33,12 +33,14 @@ private fun AppScreen() {
         navController = navController,
         startDestination = route,
     ) {
+        //region Overview Screen
         composable(route = Overview.route) {
             OverviewScreen()
-        }
+        } //endregion
     }
 }
 
+//region Preview
 @Preview(showBackground = true)
 @Composable
 private fun AppPreview() {
@@ -46,3 +48,4 @@ private fun AppPreview() {
         AppScreen()
     }
 }
+//endregion

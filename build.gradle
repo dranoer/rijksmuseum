@@ -7,6 +7,8 @@ buildscript {
         lifecycleVersion = '2.6.1'
         composeVersion = '1.7.2'
         composeBomVersion = '2022.10.00'
+        accompanistVersion = '0.20.0'
+        navigationVersion = '2.6.0'
         hiltVersion = '1.0.0'
         daggerVersion = '2.46.1'
         junitVersion = '4.13.2'

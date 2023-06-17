@@ -1,5 +1,6 @@
 package com.dranoer.rijksmuseum.ui.screen
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,9 +15,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.dranoer.rijksmuseum.MainViewModel
 import com.dranoer.rijksmuseum.MainViewModel.UiState.Empty
@@ -52,8 +53,8 @@ fun OverviewScreen(
 
             is Success ->
                 LoadedScreen(
+                    modifier = Modifier.fillMaxSize(),
                     artGroups = state.data,
-                    modifier = Modifier.padding(horizontal = 4.dp),
                     viewModel = viewModel,
                 )
 
@@ -77,10 +78,11 @@ fun LoadedScreen(artGroups: List<ArtGroup>, modifier: Modifier, viewModel: MainV
         //region Content
         content = { padding ->
             Box(
-                contentAlignment = Alignment.Center,
                 modifier = modifier
                     .fillMaxSize()
                     .padding(padding)
+                    .background(color = colorResource(id = R.color.gray_50)),
+                contentAlignment = Alignment.Center,
             ) {
                 SwipeRefresh(
                     state = rememberSwipeRefreshState(isRefreshing = viewModel.isRefreshing.collectAsState().value),

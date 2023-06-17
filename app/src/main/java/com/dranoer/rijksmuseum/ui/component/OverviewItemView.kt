@@ -14,17 +14,19 @@ import com.dranoer.rijksmuseum.ui.theme.RijksmuseumTheme
 @Composable
 fun OverviewItem(artItems: List<ArtGroup>) {
     LazyColumn(
-        modifier = Modifier.padding(6.dp),
+        modifier = Modifier.padding(start = 20.dp, top = 2.dp, end = 20.dp, bottom = 24.dp),
     ) {
+        //region Items
         items(
             items = artItems,
             itemContent = { item ->
                 ArtItem(artItems = item)
             }
-        )
+        ) //endregion
     }
 }
 
+//region Preview
 @Preview
 @Composable
 private fun OverviewItemPreview_SingleGroup() {

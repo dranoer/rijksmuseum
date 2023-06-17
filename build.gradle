@@ -8,6 +8,7 @@ buildscript {
         composeVersion = '1.7.2'
         composeBomVersion = '2022.10.00'
         accompanistVersion = '0.20.0'
+        coilVersion = '2.2.2'
         navigationVersion = '2.6.0'
         hiltVersion = '1.0.0'
         daggerVersion = '2.46.1'

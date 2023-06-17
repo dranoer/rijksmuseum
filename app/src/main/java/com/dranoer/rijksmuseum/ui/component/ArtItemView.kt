@@ -1,21 +1,26 @@
 package com.dranoer.rijksmuseum.ui.component
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
-import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import coil.compose.rememberAsyncImagePainter
 import com.dranoer.rijksmuseum.ui.ArtGroup
 import com.dranoer.rijksmuseum.ui.ArtItem
 import com.dranoer.rijksmuseum.ui.theme.RijksmuseumTheme
@@ -26,26 +31,44 @@ fun ArtItem(artItems: ArtGroup) {
         Card(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(12.dp),
-            backgroundColor = Color.LightGray,
+                .padding(top = 18.dp),
             shape = RoundedCornerShape(16),
         ) {
             Row(
-                horizontalArrangement = Arrangement.Start,
                 modifier = Modifier
-                    .padding(16.dp)
+                    .padding(start = 12.dp, top = 12.dp, end = 10.dp, bottom = 12.dp)
                     .fillMaxWidth(),
+                horizontalArrangement = Arrangement.Start,
             ) {
-                Column {
-                    Text(text = artItems.author)
-                    Divider(
-                        color = Color.Black,
-                        thickness = 1.dp,
-                        modifier = Modifier.padding(bottom = 2.dp)
+                //region Image
+                Column(
+                    verticalArrangement = Arrangement.Center,
+                ) {
+                    Image(
+                        modifier = Modifier.size(80.dp),
+                        painter = rememberAsyncImagePainter(item.imageUrl),
+                        contentDescription = "Image url: ${item.imageUrl}",
                     )
-                    Text(text = item.title, style = TextStyle(fontWeight = FontWeight.Bold))
-                    Text(text = item.longTitle)
-                }
+                } //endregion
+                //region Spacer
+                Spacer(modifier = Modifier.width(8.dp)) //endregion
+                //region Info
+                Column(
+                    verticalArrangement = Arrangement.Center,
+                ) {
+                    //region Header
+                    Text(
+                        text = artItems.author,
+                        style = TextStyle(fontWeight = FontWeight.Bold, fontSize = 16.sp)
+                    ) //endregion
+                    //region Spacer
+                    Spacer(modifier = Modifier.height(8.dp)) //endregion
+                    //region Title
+                    Text(
+                        text = item.title,
+                        style = TextStyle(fontSize = 14.sp)
+                    ) //endregion
+                } //endregion
             }
         }
     }

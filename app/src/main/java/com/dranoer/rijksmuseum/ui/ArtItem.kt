@@ -9,7 +9,7 @@ data class ArtItem(
     val id: String,
     val artist: String,
     val title: String,
-    val longTitle: String,
+    val description: String,
     val imageUrl: String,
     val headerImageUrl: String,
 )

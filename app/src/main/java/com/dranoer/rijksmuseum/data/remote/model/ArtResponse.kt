@@ -18,7 +18,7 @@ data class ArtObject(
     val title: String? = null,
 
     @SerializedName("longTitle")
-    val longTitle: String? = null,
+    val description: String? = null,
 
     @SerializedName("webImage")
     val image: Image? = null,

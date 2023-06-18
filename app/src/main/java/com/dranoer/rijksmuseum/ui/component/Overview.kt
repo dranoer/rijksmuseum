@@ -12,7 +12,10 @@ import com.dranoer.rijksmuseum.ui.ArtItem
 import com.dranoer.rijksmuseum.ui.theme.RijksmuseumTheme
 
 @Composable
-fun OverviewItem(artItems: List<ArtGroup>) {
+fun Overview(
+    artItems: List<ArtGroup>,
+    onItemClick: (ArtItem) -> Unit,
+) {
     LazyColumn(
         modifier = Modifier.padding(start = 20.dp, top = 2.dp, end = 20.dp, bottom = 24.dp),
     ) {
@@ -20,7 +23,7 @@ fun OverviewItem(artItems: List<ArtGroup>) {
         items(
             items = artItems,
             itemContent = { item ->
-                ArtItem(artItems = item)
+                OverviewItem(artItems = item, onItemClick = onItemClick)
             }
         ) //endregion
     }
@@ -29,13 +32,13 @@ fun OverviewItem(artItems: List<ArtGroup>) {
 //region Preview
 @Preview
 @Composable
-private fun OverviewItemPreview_SingleGroup() {
+private fun OverviewPreview_SingleGroup() {
     RijksmuseumTheme {
         val artItem1 = ArtItem(
             id = "1",
             artist = "Artist 1",
             title = "Title 1",
-            longTitle = "This is a description for artwork number 1",
+            description = "This is a description for artwork number 1",
             imageUrl = "",
             headerImageUrl = ""
         )
@@ -43,7 +46,7 @@ private fun OverviewItemPreview_SingleGroup() {
             id = "2",
             artist = "Artist 2",
             title = "Title 2",
-            longTitle = "This is a description for artwork number 2",
+            description = "This is a description for artwork number 2",
             imageUrl = "",
             headerImageUrl = ""
         )
@@ -51,19 +54,19 @@ private fun OverviewItemPreview_SingleGroup() {
             author = "Art Group 1",
             artItems = listOf(artItem1, artItem2)
         )
-        OverviewItem(artItems = listOf(artGroup))
+        Overview(artItems = listOf(artGroup), onItemClick = {})
     }
 }
 
 @Preview
 @Composable
-private fun OverviewItemPreview_MultipleGroups() {
+private fun OverviewPreview_MultipleGroups() {
     RijksmuseumTheme {
         val artItem1 = ArtItem(
             id = "1",
             artist = "Artist 1",
             title = "Title 1",
-            longTitle = "This is a description for artwork number 1",
+            description = "This is a description for artwork number 1",
             imageUrl = "",
             headerImageUrl = ""
         )
@@ -71,7 +74,7 @@ private fun OverviewItemPreview_MultipleGroups() {
             id = "2",
             artist = "Artist 2",
             title = "Title 2",
-            longTitle = "This is a description for artwork number 2",
+            description = "This is a description for artwork number 2",
             imageUrl = "",
             headerImageUrl = ""
         )
@@ -83,7 +86,7 @@ private fun OverviewItemPreview_MultipleGroups() {
             id = "3",
             artist = "Artist 3",
             title = "Title 3",
-            longTitle = "This is a description for artwork number 3",
+            description = "This is a description for artwork number 3",
             imageUrl = "",
             headerImageUrl = ""
         )
@@ -91,7 +94,7 @@ private fun OverviewItemPreview_MultipleGroups() {
             id = "4",
             artist = "Artist 4",
             title = "Title 4",
-            longTitle = "This is a description for artwork number 4",
+            description = "This is a description for artwork number 4",
             imageUrl = "",
             headerImageUrl = ""
         )
@@ -99,7 +102,7 @@ private fun OverviewItemPreview_MultipleGroups() {
             author = "Art Group 2",
             artItems = listOf(artItem3, artItem4)
         )
-        OverviewItem(artItems = listOf(artGroup1, artGroup2))
+        Overview(artItems = listOf(artGroup1, artGroup2), onItemClick = {})
     }
 }
 //endregion

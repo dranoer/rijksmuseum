@@ -1,6 +1,7 @@
 package com.dranoer.rijksmuseum.ui.component
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -12,6 +13,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -25,14 +27,17 @@ import com.dranoer.rijksmuseum.ui.ArtGroup
 import com.dranoer.rijksmuseum.ui.ArtItem
 import com.dranoer.rijksmuseum.ui.theme.RijksmuseumTheme
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun ArtItem(artItems: ArtGroup) {
+fun OverviewItem(artItems: ArtGroup, onItemClick: (ArtItem) -> Unit) {
     for (item in artItems.artItems) {
         Card(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 18.dp),
+                .padding(top = 18.dp)
+                .clickable { onItemClick(item) },
             shape = RoundedCornerShape(16),
+            onClick = { onItemClick(item) }
         ) {
             Row(
                 modifier = Modifier
@@ -77,13 +82,13 @@ fun ArtItem(artItems: ArtGroup) {
 //region Preview
 @Preview
 @Composable
-private fun ArtPreview_Normal() {
+private fun OverviewItem_Normal() {
     RijksmuseumTheme {
         val artItem = ArtItem(
             id = "1",
             artist = "Artist 1",
             title = "Title 1",
-            longTitle = "This is a description for artwork number 1",
+            description = "This is a description for artwork number 1",
             imageUrl = "",
             headerImageUrl = ""
         )
@@ -93,19 +98,19 @@ private fun ArtPreview_Normal() {
             artItems = listOf(artItem)
         )
 
-        ArtItem(artItems = artGroup)
+        OverviewItem(artItems = artGroup, onItemClick = {})
     }
 }
 
 @Preview
 @Composable
-private fun ArtItemPreview_LongTitles() {
+private fun OverviewItemPreview_LongTitles() {
     RijksmuseumTheme {
         val artItem = ArtItem(
             id = "1",
             artist = "Artist 1",
             title = "Title 1",
-            longTitle = "This is a very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very long title.",
+            description = "This is a very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very long title.",
             imageUrl = "",
             headerImageUrl = ""
         )
@@ -113,19 +118,19 @@ private fun ArtItemPreview_LongTitles() {
             author = "LongTitles",
             artItems = listOf(artItem)
         )
-        ArtItem(artItems = artGroup)
+        OverviewItem(artItems = artGroup, onItemClick = {})
     }
 }
 
 @Preview
 @Composable
-private fun ArtItemPreview_NoItems() {
+private fun OverviewItemPreview_NoItems() {
     RijksmuseumTheme {
         val artGroup = ArtGroup(
             author = "NoItems",
             artItems = emptyList()
         )
-        ArtItem(artItems = artGroup)
+        OverviewItem(artItems = artGroup, onItemClick = {})
     }
 }
 //endregion

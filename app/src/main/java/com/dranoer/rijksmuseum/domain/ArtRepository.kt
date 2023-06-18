@@ -20,7 +20,7 @@ class ArtRepository @Inject constructor(
                 id = item.id,
                 artist = item.artist ?: "",
                 title = item.title ?: "",
-                longTitle = item.longTitle ?: "",
+                description = item.description ?: "",
                 imageUrl = item.image?.url ?: "",
                 headerImageUrl = item.headerImage?.url ?: "",
             )

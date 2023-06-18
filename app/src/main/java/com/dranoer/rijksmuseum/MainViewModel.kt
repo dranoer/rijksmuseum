@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.dranoer.rijksmuseum.data.remote.CoroutineDispatcherProvider
 import com.dranoer.rijksmuseum.domain.ArtRepository
 import com.dranoer.rijksmuseum.ui.ArtGroup
+import com.dranoer.rijksmuseum.ui.ArtItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -48,6 +49,18 @@ class MainViewModel @Inject constructor(
                     }
                 }
             }
+        }
+    }
+
+    fun getItemById(itemId: String): ArtItem? {
+        return when (val state = uiState.value) {
+            is UiState.Success -> {
+                state.data
+                    .flatMap { it.artItems }
+                    .find { it.id == itemId }
+            }
+
+            else -> null
         }
     }
 

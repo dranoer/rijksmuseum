@@ -19,6 +19,8 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.dranoer.rijksmuseum.MainViewModel
 import com.dranoer.rijksmuseum.MainViewModel.UiState.Empty
 import com.dranoer.rijksmuseum.MainViewModel.UiState.Error
@@ -26,7 +28,7 @@ import com.dranoer.rijksmuseum.MainViewModel.UiState.Loading
 import com.dranoer.rijksmuseum.MainViewModel.UiState.Success
 import com.dranoer.rijksmuseum.R
 import com.dranoer.rijksmuseum.ui.ArtGroup
-import com.dranoer.rijksmuseum.ui.component.OverviewItem
+import com.dranoer.rijksmuseum.ui.component.Overview
 import com.dranoer.rijksmuseum.ui.theme.RijksmuseumTheme
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
@@ -35,6 +37,7 @@ import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 fun OverviewScreen(
     modifier: Modifier = Modifier,
     viewModel: MainViewModel = hiltViewModel(),
+    navController: NavController,
 ) {
     val state = viewModel.uiState.collectAsState().value
 
@@ -56,6 +59,7 @@ fun OverviewScreen(
                     modifier = Modifier.fillMaxSize(),
                     artGroups = state.data,
                     viewModel = viewModel,
+                    navController = navController,
                 )
 
             is Error -> Text(text = "Error ${state.message}")
@@ -64,7 +68,12 @@ fun OverviewScreen(
 }
 
 @Composable
-fun LoadedScreen(artGroups: List<ArtGroup>, modifier: Modifier, viewModel: MainViewModel) {
+fun LoadedScreen(
+    artGroups: List<ArtGroup>,
+    modifier: Modifier,
+    viewModel: MainViewModel,
+    navController: NavController,
+) {
     Scaffold(
         //region TopAppBar
         topBar = {
@@ -88,11 +97,12 @@ fun LoadedScreen(artGroups: List<ArtGroup>, modifier: Modifier, viewModel: MainV
                     state = rememberSwipeRefreshState(isRefreshing = viewModel.isRefreshing.collectAsState().value),
                     onRefresh = { viewModel.fetchArts() },
                 ) {
-                    OverviewItem(artItems = artGroups)
+                    Overview(artItems = artGroups) { item ->
+                        navController.navigate("detail/${item.id}")
+                    }
                 }
             }
-        },
-        //endregion
+        }, //endregion
     )
 }
 
@@ -100,8 +110,9 @@ fun LoadedScreen(artGroups: List<ArtGroup>, modifier: Modifier, viewModel: MainV
 @Preview
 @Composable
 private fun OverviewPreview_Normal() {
+    val navController = rememberNavController()
     RijksmuseumTheme {
-        OverviewScreen()
+        OverviewScreen(navController = navController)
     }
 }
 //endregion

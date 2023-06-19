@@ -9,7 +9,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.dranoer.rijksmuseum.ui.screen.DetailScreen
 import com.dranoer.rijksmuseum.ui.screen.OverviewScreen
 import com.dranoer.rijksmuseum.ui.theme.RijksmuseumTheme
 import com.dranoer.rijksmuseum.ui.util.Route.Detail
@@ -45,8 +44,8 @@ private fun AppScreen() {
         //region Detail Screen
         composable(route = "${Detail.route}/{itemId}") { backStackEntry ->
             val itemId = backStackEntry.arguments?.getString("itemId")
-            val selectedItem = itemId?.let { viewModel.getItemById(it) }
-            DetailScreen(navController = navController, detail = selectedItem)
+//            val selectedItem = itemId?.let { viewModel.getItemById(it) }
+//            DetailScreen(navController = navController, detail = selectedItem)
         } //endregion
     }
 }

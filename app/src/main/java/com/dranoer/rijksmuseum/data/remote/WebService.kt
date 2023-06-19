@@ -8,6 +8,9 @@ interface WebService {
 
     @GET("collection")
     suspend fun fetchArtList(
+        @Query("q") query: String = "",
+        @Query("p") page: Int,
+        @Query("ps") pageSize: Int = 10,
         @Query("key") key: String = "0fiuZFh4"
-    ) : ArtResponse
+    ): ArtResponse
 }

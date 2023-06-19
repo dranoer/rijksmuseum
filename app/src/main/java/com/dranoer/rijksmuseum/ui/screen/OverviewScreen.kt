@@ -21,6 +21,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.collectAsLazyPagingItems
 import com.dranoer.rijksmuseum.MainViewModel
 import com.dranoer.rijksmuseum.MainViewModel.UiState.Empty
 import com.dranoer.rijksmuseum.MainViewModel.UiState.Error
@@ -54,13 +56,15 @@ fun OverviewScreen(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) { CircularProgressIndicator() }
 
-            is Success ->
+            is Success -> {
+                val lazyPagingItems = state.data.collectAsLazyPagingItems()
                 LoadedScreen(
                     modifier = Modifier.fillMaxSize(),
-                    artGroups = state.data,
+                    artGroups = lazyPagingItems,
                     viewModel = viewModel,
                     navController = navController,
                 )
+            }
 
             is Error -> Text(text = "Error ${state.message}")
         } //endregion
@@ -69,7 +73,7 @@ fun OverviewScreen(
 
 @Composable
 fun LoadedScreen(
-    artGroups: List<ArtGroup>,
+    artGroups: LazyPagingItems<ArtGroup>,
     modifier: Modifier,
     viewModel: MainViewModel,
     navController: NavController,
@@ -97,7 +101,7 @@ fun LoadedScreen(
                     state = rememberSwipeRefreshState(isRefreshing = viewModel.isRefreshing.collectAsState().value),
                     onRefresh = { viewModel.fetchArts() },
                 ) {
-                    Overview(artItems = artGroups) { item ->
+                    Overview(lazyPagingItems = artGroups) { item ->
                         navController.navigate("detail/${item.id}")
                     }
                 }

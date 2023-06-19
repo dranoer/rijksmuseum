@@ -7,25 +7,25 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.items
 import com.dranoer.rijksmuseum.ui.ArtGroup
 import com.dranoer.rijksmuseum.ui.ArtItem
 import com.dranoer.rijksmuseum.ui.theme.RijksmuseumTheme
 
 @Composable
 fun Overview(
-    artItems: List<ArtGroup>,
+    lazyPagingItems: LazyPagingItems<ArtGroup>,
     onItemClick: (ArtItem) -> Unit,
 ) {
     LazyColumn(
         modifier = Modifier.padding(start = 20.dp, top = 2.dp, end = 20.dp, bottom = 24.dp),
     ) {
-        //region Items
-        items(
-            items = artItems,
-            itemContent = { item ->
-                OverviewItem(artItems = item, onItemClick = onItemClick)
+        items(lazyPagingItems) { artGroup ->
+            artGroup?.artItems?.forEach { artItem ->
+                OverviewItem(artGroup, artItem, onItemClick)
             }
-        ) //endregion
+        }
     }
 }
 
@@ -54,7 +54,9 @@ private fun OverviewPreview_SingleGroup() {
             author = "Art Group 1",
             artItems = listOf(artItem1, artItem2)
         )
-        Overview(artItems = listOf(artGroup), onItemClick = {})
+
+        // A fake Overview composable that doesn't use paging
+        OverviewNonPaged(artGroups = listOf(artGroup), artItem = artItem1, onItemClick = {})
     }
 }
 
@@ -102,7 +104,20 @@ private fun OverviewPreview_MultipleGroups() {
             author = "Art Group 2",
             artItems = listOf(artItem3, artItem4)
         )
-        Overview(artItems = listOf(artGroup1, artGroup2), onItemClick = {})
+        
+        OverviewNonPaged(
+            artGroups = listOf(artGroup1, artGroup2),
+            artItem = artItem1,
+            onItemClick = {})
+    }
+}
+
+@Composable
+fun OverviewNonPaged(artGroups: List<ArtGroup>, artItem: ArtItem, onItemClick: (ArtItem) -> Unit) {
+    LazyColumn {
+        items(artGroups) { group ->
+            OverviewItem(artGroup = group, artItem = artItem, onItemClick = onItemClick)
+        }
     }
 }
 //endregion

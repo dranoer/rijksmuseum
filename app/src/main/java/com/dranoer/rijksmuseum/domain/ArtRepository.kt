@@ -1,29 +1,23 @@
 package com.dranoer.rijksmuseum.domain
 
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import com.dranoer.rijksmuseum.data.remote.ArtPagingSource
 import com.dranoer.rijksmuseum.data.remote.WebService
-import com.dranoer.rijksmuseum.data.remote.model.ArtResponse
 import com.dranoer.rijksmuseum.ui.ArtItem
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class ArtRepository @Inject constructor(
     private val service: WebService,
 ) {
+    fun fetchArtList(query: String = ""): Flow<PagingData<ArtItem>> = Pager(
+        config = PagingConfig(pageSize = PAGE_SIZE, enablePlaceholders = false),
+        pagingSourceFactory = { ArtPagingSource(service, query) },
+    ).flow
 
-    suspend fun fetchArtList(): List<ArtItem> {
-        val response = service.fetchArtList()
-        return artMapper(artResponse = response)
-    }
-
-    private fun artMapper(artResponse: ArtResponse): List<ArtItem> {
-        return artResponse.artObjects.map { item ->
-            ArtItem(
-                id = item.id,
-                artist = item.artist ?: "",
-                title = item.title ?: "",
-                description = item.description ?: "",
-                imageUrl = item.image?.url ?: "",
-                headerImageUrl = item.headerImage?.url ?: "",
-            )
-        }
+    companion object {
+        private const val PAGE_SIZE = 20
     }
 }

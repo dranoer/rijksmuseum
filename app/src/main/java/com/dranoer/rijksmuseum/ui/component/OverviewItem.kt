@@ -29,52 +29,50 @@ import com.dranoer.rijksmuseum.ui.theme.RijksmuseumTheme
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun OverviewItem(artItems: ArtGroup, onItemClick: (ArtItem) -> Unit) {
-    for (item in artItems.artItems) {
-        Card(
+fun OverviewItem(artGroup: ArtGroup?, artItem: ArtItem?, onItemClick: (ArtItem) -> Unit) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 18.dp)
+            .clickable { artItem?.let { onItemClick(it) } },
+        shape = RoundedCornerShape(16),
+        onClick = { artItem?.let { onItemClick(it) } }
+    ) {
+        Row(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 18.dp)
-                .clickable { onItemClick(item) },
-            shape = RoundedCornerShape(16),
-            onClick = { onItemClick(item) }
+                .padding(start = 12.dp, top = 12.dp, end = 10.dp, bottom = 12.dp)
+                .fillMaxWidth(),
+            horizontalArrangement = Arrangement.Start,
         ) {
-            Row(
-                modifier = Modifier
-                    .padding(start = 12.dp, top = 12.dp, end = 10.dp, bottom = 12.dp)
-                    .fillMaxWidth(),
-                horizontalArrangement = Arrangement.Start,
+            //region Image
+            Column(
+                verticalArrangement = Arrangement.Center,
             ) {
-                //region Image
-                Column(
-                    verticalArrangement = Arrangement.Center,
-                ) {
-                    Image(
-                        modifier = Modifier.size(80.dp),
-                        painter = rememberAsyncImagePainter(item.imageUrl),
-                        contentDescription = "Image url: ${item.imageUrl}",
-                    )
-                } //endregion
+                Image(
+                    modifier = Modifier.size(80.dp),
+                    painter = rememberAsyncImagePainter(artItem?.imageUrl ?: ""),
+                    contentDescription = "Image url: ${artItem?.imageUrl ?: ""}",
+                )
+            } //endregion
+            //region Spacer
+            Spacer(modifier = Modifier.width(8.dp)) //endregion
+            //region Info
+            Column(
+                verticalArrangement = Arrangement.Center,
+            ) {
+                //region Header
+                Text(
+                    text = artGroup?.author ?: "",
+                    style = TextStyle(fontWeight = FontWeight.Bold, fontSize = 16.sp)
+                ) //endregion
                 //region Spacer
-                Spacer(modifier = Modifier.width(8.dp)) //endregion
-                //region Info
-                Column(
-                    verticalArrangement = Arrangement.Center,
-                ) {
-                    //region Header
-                    Text(
-                        text = artItems.author,
-                        style = TextStyle(fontWeight = FontWeight.Bold, fontSize = 16.sp)
-                    ) //endregion
-                    //region Spacer
-                    Spacer(modifier = Modifier.height(8.dp)) //endregion
-                    //region Title
-                    Text(
-                        text = item.title,
-                        style = TextStyle(fontSize = 14.sp)
-                    ) //endregion
-                } //endregion
-            }
+                Spacer(modifier = Modifier.height(8.dp)) //endregion
+                //region Title
+                Text(
+                    text = artItem?.title ?: "",
+                    style = TextStyle(fontSize = 14.sp)
+                ) //endregion
+            } //endregion
         }
     }
 }
@@ -92,13 +90,12 @@ private fun OverviewItem_Normal() {
             imageUrl = "",
             headerImageUrl = ""
         )
-
         val artGroup = ArtGroup(
             author = "Normal",
             artItems = listOf(artItem)
         )
 
-        OverviewItem(artItems = artGroup, onItemClick = {})
+        OverviewItem(artGroup = artGroup, artItem = artItem, onItemClick = {})
     }
 }
 
@@ -118,7 +115,8 @@ private fun OverviewItemPreview_LongTitles() {
             author = "LongTitles",
             artItems = listOf(artItem)
         )
-        OverviewItem(artItems = artGroup, onItemClick = {})
+
+        OverviewItem(artGroup = artGroup, artItem = artItem, onItemClick = {})
     }
 }
 
@@ -130,7 +128,8 @@ private fun OverviewItemPreview_NoItems() {
             author = "NoItems",
             artItems = emptyList()
         )
-        OverviewItem(artItems = artGroup, onItemClick = {})
+
+        OverviewItem(artGroup = artGroup, artItem = null, onItemClick = {})
     }
 }
 //endregion

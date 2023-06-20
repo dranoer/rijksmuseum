@@ -1,6 +1,5 @@
 package com.dranoer.rijksmuseum
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
@@ -10,6 +9,8 @@ import com.dranoer.rijksmuseum.domain.ArtRepository
 import com.dranoer.rijksmuseum.ui.ArtGroup
 import com.dranoer.rijksmuseum.ui.DetailItem
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -21,6 +22,7 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val repository: ArtRepository,
+    private val dispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : ViewModel() {
 
     private val _overviewUiState = MutableStateFlow<OverviewUiState>(OverviewUiState.Loading)
@@ -37,10 +39,9 @@ class MainViewModel @Inject constructor(
     }
 
     fun fetchArts(query: String = "") {
-        viewModelScope.launch {
+        viewModelScope.launch(dispatcher) {
             _isRefreshing.value = true
             try {
-                Log.d("MainViewModel", "Fetch arts started at ${System.currentTimeMillis()}")
                 val flow = repository.fetchArtList(query)
                     .map { pagingData ->
                         pagingData.map { artItem ->
@@ -51,7 +52,6 @@ class MainViewModel @Inject constructor(
                         }
                     }
                     .cachedIn(viewModelScope)
-                Log.d("MainViewModel", "Data fetched at ${System.currentTimeMillis()}")
                 _overviewUiState.value = OverviewUiState.Success(flow)
             } catch (ex: Exception) {
                 _overviewUiState.value =
@@ -63,7 +63,7 @@ class MainViewModel @Inject constructor(
     }
 
     fun fetchArtDetail(objectNumber: String) {
-        viewModelScope.launch {
+        viewModelScope.launch(dispatcher) {
             try {
                 val response = repository.fetchArtDetail(id = objectNumber)
                 _detailUiState.value = DetailUiState.Success(response)
@@ -77,12 +77,36 @@ class MainViewModel @Inject constructor(
     sealed class OverviewUiState {
         object Loading : OverviewUiState()
         class Success(val data: Flow<PagingData<ArtGroup>>) : OverviewUiState()
-        class Error(val message: String) : OverviewUiState()
+        class Error(val message: String) : OverviewUiState() {
+            override fun equals(other: Any?): Boolean {
+                if (this === other) return true
+                if (javaClass != other?.javaClass) return false
+                other as Error
+                if (message != other.message) return false
+                return true
+            }
+
+            override fun hashCode(): Int {
+                return message.hashCode()
+            }
+        }
     }
 
     sealed class DetailUiState {
         object Loading : DetailUiState()
         class Success(val data: DetailItem) : DetailUiState()
-        class Error(val message: String) : DetailUiState()
+        class Error(val message: String) : DetailUiState() {
+            override fun equals(other: Any?): Boolean {
+                if (this === other) return true
+                if (javaClass != other?.javaClass) return false
+                other as Error
+                if (message != other.message) return false
+                return true
+            }
+
+            override fun hashCode(): Int {
+                return message.hashCode()
+            }
+        }
     }
 }

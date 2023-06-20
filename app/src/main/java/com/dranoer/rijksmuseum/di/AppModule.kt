@@ -10,6 +10,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.Dispatchers
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -57,4 +58,7 @@ class AppModule {
         artMapper: ArtMapper,
         detailMapper: DetailMapper,
     ) = ArtRepository(service = webService, artMapper = artMapper, detailMapper = detailMapper)
+
+    @Provides
+    fun provideIODispatcher() = Dispatchers.IO
 }

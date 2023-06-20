@@ -89,8 +89,6 @@ dependencies {
 
     // Test
     testImplementation "junit:junit:$junitVersion"
-    androidTestImplementation "androidx.test.ext:junit:$testExtVersion"
-    androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVersion"
-    androidTestImplementation platform("androidx.compose:compose-bom:$composeBomVersion")
-    androidTestImplementation 'androidx.compose.ui:ui-test-junit4'
+    testImplementation "io.mockk:mockk:$mockkVersion"
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutineVersion"
 }

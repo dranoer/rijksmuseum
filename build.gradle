@@ -12,15 +12,15 @@ buildscript {
         navigationVersion = '2.6.0'
         hiltVersion = '1.0.0'
         daggerVersion = '2.46.1'
-        junitVersion = '4.13.2'
-        testExtVersion = '1.1.5'
-        espressoVersion = '3.5.1'
         ktlintVersion = '10.2.0'
         retrofitVersion = '2.9.0'
         okhttpVersion = '4.11.0'
         serializationVersion = '1.5.1'
         pagingVersion = '3.1.0'
         pagingComposeVersion = '1.0.0-alpha14'
+        junitVersion = '4.13.2'
+        coroutineVersion = '1.6.4'
+        mockkVersion = '1.12.0'
     }
 
     dependencies {

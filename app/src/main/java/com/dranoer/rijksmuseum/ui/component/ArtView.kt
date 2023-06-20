@@ -28,7 +28,7 @@ import com.dranoer.rijksmuseum.ui.theme.RijksmuseumTheme
 import com.dranoer.rijksmuseum.ui.util.OnClickListener
 
 @Composable
-fun OverviewItem(artGroup: ArtGroup?, artItem: ArtItem?, callback: OnClickListener?) {
+fun ArtItem(artGroup: ArtGroup?, artItem: ArtItem?, callback: OnClickListener?) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -94,7 +94,7 @@ private fun OverviewItem_Normal() {
             artItems = listOf(artItem)
         )
 
-        OverviewItem(artGroup = artGroup, artItem = artItem, callback = null)
+        ArtItem(artGroup = artGroup, artItem = artItem, callback = null)
     }
 }
 
@@ -116,7 +116,7 @@ private fun OverviewItemPreview_LongTitles() {
             artItems = listOf(artItem)
         )
 
-        OverviewItem(artGroup = artGroup, artItem = artItem, callback = null)
+        ArtItem(artGroup = artGroup, artItem = artItem, callback = null)
     }
 }
 
@@ -129,7 +129,7 @@ private fun OverviewItemPreview_NoItems() {
             artItems = emptyList()
         )
 
-        OverviewItem(artGroup = artGroup, artItem = null, callback = null)
+        ArtItem(artGroup = artGroup, artItem = null, callback = null)
     }
 }
 //endregion

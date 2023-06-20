@@ -18,7 +18,7 @@ import androidx.compose.ui.unit.dp
 import com.dranoer.rijksmuseum.R
 
 @Composable
-fun DetailCard(
+fun DetailCardView(
     modifier: Modifier = Modifier,
     alpha: Float,
     artist: String?,
@@ -73,7 +73,7 @@ fun DetailCard(
 @Preview
 @Composable
 fun DetailCardPreview() =
-    DetailCard(
+    DetailCardView(
         modifier = Modifier.requiredHeight(200.dp),
         alpha = 40F,
         artist = "an artist!",

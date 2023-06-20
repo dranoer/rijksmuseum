@@ -1,6 +1,5 @@
 package com.dranoer.rijksmuseum.di
 
-import com.dranoer.rijksmuseum.data.remote.CoroutineDispatcherProvider
 import com.dranoer.rijksmuseum.data.remote.WebService
 import com.dranoer.rijksmuseum.domain.ArtRepository
 import dagger.Module
@@ -36,9 +35,6 @@ class AppModule {
                 level = HttpLoggingInterceptor.Level.BODY
             })
             .build()
-
-    @Provides
-    fun provideCoroutineDispatcher() = CoroutineDispatcherProvider()
 
     @Singleton
     @Provides

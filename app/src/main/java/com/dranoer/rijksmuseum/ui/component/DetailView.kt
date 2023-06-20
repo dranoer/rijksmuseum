@@ -18,7 +18,7 @@ import com.dranoer.rijksmuseum.ui.DetailItem
 import com.dranoer.rijksmuseum.ui.theme.RijksmuseumTheme
 
 @Composable
-fun DetailItemView(item: DetailItem) {
+fun DetailView(item: DetailItem) {
     BoxWithConstraints(
         modifier = Modifier
             .fillMaxSize()
@@ -35,7 +35,7 @@ fun DetailItemView(item: DetailItem) {
                 contentDescription = "Detail image",
             ) //endregion
             //region Content
-            DetailCard(
+            DetailCardView(
                 modifier = Modifier.requiredHeight(500.dp),
                 alpha = 1F,
                 artist = item.artist,
@@ -52,7 +52,7 @@ fun DetailItemView(item: DetailItem) {
 @Composable
 fun HeaderView_Normal() {
     RijksmuseumTheme() {
-        DetailItemView(
+        DetailView(
             DetailItem(
                 id = "1",
                 artist = "Artist 1",

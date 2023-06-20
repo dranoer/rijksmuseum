@@ -1,11 +1,14 @@
 package com.dranoer.rijksmuseum.ui.screen
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
@@ -17,17 +20,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.compose.rememberNavController
+import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.paging.compose.items
 import com.dranoer.rijksmuseum.MainViewModel
-import com.dranoer.rijksmuseum.MainViewModel.OverviewUiState.Empty
 import com.dranoer.rijksmuseum.MainViewModel.OverviewUiState.Error
 import com.dranoer.rijksmuseum.MainViewModel.OverviewUiState.Loading
 import com.dranoer.rijksmuseum.MainViewModel.OverviewUiState.Success
 import com.dranoer.rijksmuseum.R
+import com.dranoer.rijksmuseum.ui.ArtGroup
+import com.dranoer.rijksmuseum.ui.ArtItem
+import com.dranoer.rijksmuseum.ui.component.ArtItem
 import com.dranoer.rijksmuseum.ui.component.ErrorView
-import com.dranoer.rijksmuseum.ui.component.Overview
 import com.dranoer.rijksmuseum.ui.theme.RijksmuseumTheme
 import com.dranoer.rijksmuseum.ui.util.OnClickListener
 import com.google.accompanist.swiperefresh.SwipeRefresh
@@ -62,8 +68,6 @@ fun OverviewScreen(
             ) {
                 //region UI State
                 when (state) {
-                    is Empty -> Text(text = "Empty")
-
                     is Loading -> Column(
                         modifier = Modifier.fillMaxSize(),
                         verticalArrangement = Arrangement.Center,
@@ -72,32 +76,143 @@ fun OverviewScreen(
 
                     is Success -> {
                         val lazyPagingItems = state.data.collectAsLazyPagingItems()
-
                         SwipeRefresh(
                             state = rememberSwipeRefreshState(isRefreshing = viewModel.isRefreshing.collectAsState().value),
-                            onRefresh = { viewModel.fetchArts() },
+                            onRefresh = {
+                                viewModel.fetchArts()
+                                Log.d("MainViewModel", "5: ${System.currentTimeMillis()}")
+                            },
                         ) {
-                            Overview(
+                            LoadedOverviewScreen(
                                 lazyPagingItems,
                                 OnClickListener { item -> onClickToDetailScreen.invoke(item.objectNumber) },
                             )
                         }
                     }
 
-                    is Error -> ErrorView(message = state.message, viewModel::fetchArts)
+                    is Error -> ErrorView(message = state.message)
                 } //endregion
             }
         }, //endregion
     )
 }
 
+@Composable
+private fun LoadedOverviewScreen(
+    lazyPagingItems: LazyPagingItems<ArtGroup>,
+    callback: OnClickListener?,
+) {
+    LazyColumn(
+        modifier = Modifier.padding(start = 20.dp, top = 2.dp, end = 20.dp, bottom = 24.dp),
+    ) {
+        items(lazyPagingItems) { artGroup ->
+            artGroup?.artItems?.forEach { artItem ->
+                ArtItem(artGroup, artItem, callback)
+            }
+        }
+    }
+}
+
 //region Preview
 @Preview
 @Composable
-private fun OverviewPreview_Normal() {
-    val navController = rememberNavController()
+private fun OverviewPreview_SingleGroup() {
     RijksmuseumTheme {
-        OverviewScreen(onClickToDetailScreen = {})
+        val artItem1 = ArtItem(
+            id = "1",
+            objectNumber = "1",
+            artist = "Artist 1",
+            title = "Title 1",
+            description = "This is a description for artwork number 1",
+            imageUrl = "",
+            headerImageUrl = ""
+        )
+        val artItem2 = ArtItem(
+            id = "2",
+            objectNumber = "2",
+            artist = "Artist 2",
+            title = "Title 2",
+            description = "This is a description for artwork number 2",
+            imageUrl = "",
+            headerImageUrl = ""
+        )
+        val artGroup = ArtGroup(
+            author = "Art Group 1",
+            artItems = listOf(artItem1, artItem2)
+        )
+
+        // A fake Overview composable that doesn't use paging
+        OverviewNonPaged(artGroups = listOf(artGroup), artItem = artItem1, onItemClick = null)
+    }
+}
+
+@Preview
+@Composable
+private fun OverviewPreview_MultipleGroups() {
+    RijksmuseumTheme {
+        val artItem1 = ArtItem(
+            id = "1",
+            objectNumber = "1",
+            artist = "Artist 1",
+            title = "Title 1",
+            description = "This is a description for artwork number 1",
+            imageUrl = "",
+            headerImageUrl = ""
+        )
+        val artItem2 = ArtItem(
+            id = "2",
+            objectNumber = "2",
+            artist = "Artist 2",
+            title = "Title 2",
+            description = "This is a description for artwork number 2",
+            imageUrl = "",
+            headerImageUrl = ""
+        )
+        val artGroup1 = ArtGroup(
+            author = "Art Group 1",
+            artItems = listOf(artItem1, artItem2)
+        )
+        val artItem3 = ArtItem(
+            id = "3",
+            objectNumber = "3",
+            artist = "Artist 3",
+            title = "Title 3",
+            description = "This is a description for artwork number 3",
+            imageUrl = "",
+            headerImageUrl = ""
+        )
+        val artItem4 = ArtItem(
+            id = "4",
+            objectNumber = "4",
+            artist = "Artist 4",
+            title = "Title 4",
+            description = "This is a description for artwork number 4",
+            imageUrl = "",
+            headerImageUrl = ""
+        )
+        val artGroup2 = ArtGroup(
+            author = "Art Group 2",
+            artItems = listOf(artItem3, artItem4)
+        )
+
+        OverviewNonPaged(
+            artGroups = listOf(artGroup1, artGroup2),
+            artItem = artItem1,
+            onItemClick = null
+        )
+    }
+}
+
+@Composable
+private fun OverviewNonPaged(
+    artGroups: List<ArtGroup>,
+    artItem: ArtItem,
+    onItemClick: OnClickListener?
+) {
+    LazyColumn {
+        items(artGroups) { group ->
+            ArtItem(artGroup = group, artItem = artItem, callback = onItemClick)
+        }
     }
 }
 //endregion

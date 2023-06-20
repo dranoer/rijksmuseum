@@ -1,6 +1,6 @@
 package com.dranoer.rijksmuseum.data.remote
 
-import com.dranoer.rijksmuseum.data.remote.model.ArtDetailResponse
+import com.dranoer.rijksmuseum.data.remote.model.DetailResponse
 import com.dranoer.rijksmuseum.data.remote.model.ArtResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -20,7 +20,7 @@ interface WebService {
     suspend fun fetchArtDetail(
         @Path("object-number") id: String,
         @Query("key") key: String = API_KEY
-    ): ArtDetailResponse
+    ): DetailResponse
 
     companion object {
         const val API_KEY = "0fiuZFh4"

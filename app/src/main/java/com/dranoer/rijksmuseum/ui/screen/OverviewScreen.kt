@@ -2,9 +2,7 @@ package com.dranoer.rijksmuseum.ui.screen
 
 import android.util.Log
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -15,6 +13,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
@@ -32,7 +31,7 @@ import com.dranoer.rijksmuseum.MainViewModel.OverviewUiState.Success
 import com.dranoer.rijksmuseum.R
 import com.dranoer.rijksmuseum.ui.ArtGroup
 import com.dranoer.rijksmuseum.ui.ArtItem
-import com.dranoer.rijksmuseum.ui.component.ArtItem
+import com.dranoer.rijksmuseum.ui.component.ArtView
 import com.dranoer.rijksmuseum.ui.component.ErrorView
 import com.dranoer.rijksmuseum.ui.theme.RijksmuseumTheme
 import com.dranoer.rijksmuseum.ui.util.OnClickListener
@@ -68,16 +67,14 @@ fun OverviewScreen(
             ) {
                 //region UI State
                 when (state) {
-                    is Loading -> Column(
-                        modifier = Modifier.fillMaxSize(),
-                        verticalArrangement = Arrangement.Center,
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) { CircularProgressIndicator() }
+                    is Loading -> CircularProgressIndicator()
 
                     is Success -> {
+                        val isRefreshing by viewModel.isRefreshing.collectAsState()
                         val lazyPagingItems = state.data.collectAsLazyPagingItems()
+
                         SwipeRefresh(
-                            state = rememberSwipeRefreshState(isRefreshing = viewModel.isRefreshing.collectAsState().value),
+                            state = rememberSwipeRefreshState(isRefreshing = isRefreshing),
                             onRefresh = {
                                 viewModel.fetchArts()
                                 Log.d("MainViewModel", "5: ${System.currentTimeMillis()}")
@@ -107,7 +104,7 @@ private fun LoadedOverviewScreen(
     ) {
         items(lazyPagingItems) { artGroup ->
             artGroup?.artItems?.forEach { artItem ->
-                ArtItem(artGroup, artItem, callback)
+                ArtView(artGroup, artItem, callback)
             }
         }
     }
@@ -211,7 +208,7 @@ private fun OverviewNonPaged(
 ) {
     LazyColumn {
         items(artGroups) { group ->
-            ArtItem(artGroup = group, artItem = artItem, callback = onItemClick)
+            ArtView(artGroup = group, artItem = artItem, callback = onItemClick)
         }
     }
 }

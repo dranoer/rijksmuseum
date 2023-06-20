@@ -1,7 +1,11 @@
 package com.dranoer.rijksmuseum.di
 
 import com.dranoer.rijksmuseum.data.remote.WebService
+import com.dranoer.rijksmuseum.data.remote.mapper.ArtMapper
+import com.dranoer.rijksmuseum.data.remote.mapper.DetailMapper
 import com.dranoer.rijksmuseum.domain.ArtRepository
+import com.dranoer.rijksmuseum.ui.util.Const.BASE_URL
+import com.dranoer.rijksmuseum.ui.util.Const.NETWORK_REQUEST_TIMEOUT_SECONDS
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -36,14 +40,21 @@ class AppModule {
             })
             .build()
 
+    @Provides
+    fun provideArtMapper(): ArtMapper {
+        return ArtMapper()
+    }
+
+    @Provides
+    fun provideDetailMapper(): DetailMapper {
+        return DetailMapper()
+    }
+
     @Singleton
     @Provides
     fun provideRepository(
         webService: WebService,
-    ) = ArtRepository(service = webService)
-
-    companion object {
-        const val NETWORK_REQUEST_TIMEOUT_SECONDS = 15L
-        const val BASE_URL = "https://www.rijksmuseum.nl/api/nl/"
-    }
+        artMapper: ArtMapper,
+        detailMapper: DetailMapper,
+    ) = ArtRepository(service = webService, artMapper = artMapper, detailMapper = detailMapper)
 }

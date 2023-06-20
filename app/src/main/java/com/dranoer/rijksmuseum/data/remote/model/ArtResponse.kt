@@ -24,13 +24,13 @@ data class ArtObject(
     val description: String? = null,
 
     @SerializedName("webImage")
-    val image: Image? = null,
+    val image: ArtImage? = null,
 
     @SerializedName("headerImage")
-    val headerImage: HeaderImage? = null,
+    val headerImage: ArtHeaderImage? = null,
 )
 
-data class Image(
+data class ArtImage(
     @SerializedName("guid")
     val guid: String,
 
@@ -38,7 +38,7 @@ data class Image(
     val url: String,
 )
 
-data class HeaderImage(
+data class ArtHeaderImage(
     @SerializedName("guid")
     val guid: String,
 

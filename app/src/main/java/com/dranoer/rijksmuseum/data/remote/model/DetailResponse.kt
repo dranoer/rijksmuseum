@@ -2,7 +2,7 @@ package com.dranoer.rijksmuseum.data.remote.model
 
 import com.google.gson.annotations.SerializedName
 
-data class ArtDetailResponse(
+data class DetailResponse(
     @SerializedName("artObject")
     val artDetail: DetailObject,
 )

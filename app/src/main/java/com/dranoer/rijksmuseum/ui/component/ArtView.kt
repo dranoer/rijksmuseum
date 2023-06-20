@@ -28,7 +28,7 @@ import com.dranoer.rijksmuseum.ui.theme.RijksmuseumTheme
 import com.dranoer.rijksmuseum.ui.util.OnClickListener
 
 @Composable
-fun ArtItem(artGroup: ArtGroup?, artItem: ArtItem?, callback: OnClickListener?) {
+fun ArtView(artGroup: ArtGroup?, artItem: ArtItem?, callback: OnClickListener?) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -78,7 +78,7 @@ fun ArtItem(artGroup: ArtGroup?, artItem: ArtItem?, callback: OnClickListener?) 
 //region Preview
 @Preview
 @Composable
-private fun OverviewItem_Normal() {
+private fun ArtView_Normal() {
     RijksmuseumTheme {
         val artItem = ArtItem(
             id = "1",
@@ -94,13 +94,13 @@ private fun OverviewItem_Normal() {
             artItems = listOf(artItem)
         )
 
-        ArtItem(artGroup = artGroup, artItem = artItem, callback = null)
+        ArtView(artGroup = artGroup, artItem = artItem, callback = null)
     }
 }
 
 @Preview
 @Composable
-private fun OverviewItemPreview_LongTitles() {
+private fun ArtViewPreview_LongTitles() {
     RijksmuseumTheme {
         val artItem = ArtItem(
             id = "1",
@@ -116,20 +116,20 @@ private fun OverviewItemPreview_LongTitles() {
             artItems = listOf(artItem)
         )
 
-        ArtItem(artGroup = artGroup, artItem = artItem, callback = null)
+        ArtView(artGroup = artGroup, artItem = artItem, callback = null)
     }
 }
 
 @Preview
 @Composable
-private fun OverviewItemPreview_NoItems() {
+private fun ArtViewPreview_NoItems() {
     RijksmuseumTheme {
         val artGroup = ArtGroup(
             author = "NoItems",
             artItems = emptyList()
         )
 
-        ArtItem(artGroup = artGroup, artItem = null, callback = null)
+        ArtView(artGroup = artGroup, artItem = null, callback = null)
     }
 }
 //endregion

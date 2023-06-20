@@ -11,6 +11,9 @@ data class ArtObject(
     @SerializedName("id")
     val id: String,
 
+    @SerializedName("objectNumber")
+    val objectNumber: String,
+
     @SerializedName("principalOrFirstMaker")
     val artist: String? = null,
 

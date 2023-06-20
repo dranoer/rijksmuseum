@@ -84,6 +84,7 @@ private fun OverviewItem_Normal() {
     RijksmuseumTheme {
         val artItem = ArtItem(
             id = "1",
+            objectNumber = "1",
             artist = "Artist 1",
             title = "Title 1",
             description = "This is a description for artwork number 1",
@@ -105,6 +106,7 @@ private fun OverviewItemPreview_LongTitles() {
     RijksmuseumTheme {
         val artItem = ArtItem(
             id = "1",
+            objectNumber = "1",
             artist = "Artist 1",
             title = "Title 1",
             description = "This is a very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very long title.",

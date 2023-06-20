@@ -22,6 +22,7 @@ fun DetailCard(
     modifier: Modifier = Modifier,
     alpha: Float,
     artist: String?,
+    title: String?,
     description: String?,
 ) {
     Surface(
@@ -39,15 +40,24 @@ fun DetailCard(
                 bottom = 50.dp
             ),
         ) {
-            //region Description
+            //region Title
             Text(
                 modifier = Modifier
                     .padding(top = 20.dp),
-                text = description ?: "",
+                text = title ?: "",
                 style = MaterialTheme.typography.body1,
                 color = colorResource(id = R.color.black),
             ) //endregion
-            //region Title
+            //region Description
+            Text(
+                modifier = Modifier
+                    .padding(top = 14.dp),
+                text = description ?: "",
+                maxLines = 5,
+                style = MaterialTheme.typography.subtitle1,
+                color = colorResource(id = R.color.black),
+            ) //endregion
+            //region Artist
             Text(
                 modifier = Modifier
                     .padding(top = 14.dp),
@@ -67,6 +77,7 @@ fun DetailCardPreview() =
         modifier = Modifier.requiredHeight(200.dp),
         alpha = 40F,
         artist = "an artist!",
+        title = "Title 1",
         description = "This is a description for this artwork."
     )
 //endregion

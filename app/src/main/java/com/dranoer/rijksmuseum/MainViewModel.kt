@@ -1,5 +1,6 @@
 package com.dranoer.rijksmuseum
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
@@ -8,6 +9,7 @@ import androidx.paging.map
 import com.dranoer.rijksmuseum.data.remote.CoroutineDispatcherProvider
 import com.dranoer.rijksmuseum.domain.ArtRepository
 import com.dranoer.rijksmuseum.ui.ArtGroup
+import com.dranoer.rijksmuseum.ui.DetailItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -23,8 +25,11 @@ class MainViewModel @Inject constructor(
     private val coroutineDispatcherProvider: CoroutineDispatcherProvider
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow<UiState>(UiState.Empty)
-    val uiState: StateFlow<UiState> = _uiState.asStateFlow()
+    private val _overviewUiState = MutableStateFlow<OverviewUiState>(OverviewUiState.Empty)
+    val overviewUiState: StateFlow<OverviewUiState> = _overviewUiState.asStateFlow()
+
+    private val _detailUiState = MutableStateFlow<DetailUiState>(DetailUiState.Empty)
+    val detailUiState: StateFlow<DetailUiState> = _detailUiState.asStateFlow()
 
     private val _isRefreshing = MutableStateFlow(false)
     val isRefreshing: StateFlow<Boolean> = _isRefreshing.asStateFlow()
@@ -36,10 +41,11 @@ class MainViewModel @Inject constructor(
     fun fetchArts(query: String = "") {
         viewModelScope.launch {
             _isRefreshing.value = true
-            _uiState.value = UiState.Loading
+            _overviewUiState.value = OverviewUiState.Loading
 
             launch(coroutineDispatcherProvider.IO()) {
                 try {
+                    Log.d("MainViewModel", "Fetch arts started at ${System.currentTimeMillis()}")
                     val flow = repository.fetchArtList(query)
                         .map { pagingData ->
                             pagingData.map { artItem ->
@@ -50,10 +56,12 @@ class MainViewModel @Inject constructor(
                             }
                         }
                         .cachedIn(viewModelScope)
+                    Log.d("MainViewModel", "Data fetched at ${System.currentTimeMillis()}")
 
-                    _uiState.value = UiState.Success(flow)
+                    _overviewUiState.value = OverviewUiState.Success(flow)
                 } catch (ex: Exception) {
-                    _uiState.value = UiState.Error(message = ex.message ?: "Unknown error")
+                    _overviewUiState.value =
+                        OverviewUiState.Error(message = ex.message ?: "Unknown error")
                 } finally {
                     _isRefreshing.value = false
                 }
@@ -61,22 +69,37 @@ class MainViewModel @Inject constructor(
         }
     }
 
-//    fun getItemById(itemId: String): ArtItem? {
-//        return when (val state = uiState.value) {
-//            is UiState.Success -> {
-//                state.data
-//                    .flatMap { it.artItems }
-//                    .find { it.id == itemId }
-//            }
-//
-//            else -> null
-//        }
-//    }
+    fun fetchArtDetail(objectNumber: String) {
+        viewModelScope.launch {
+            _detailUiState.value = DetailUiState.Loading
+            _isRefreshing.value = true
 
-    sealed class UiState {
-        object Empty : UiState()
-        object Loading : UiState()
-        class Success(val data: Flow<PagingData<ArtGroup>>) : UiState()
-        class Error(val message: String) : UiState()
+            launch(coroutineDispatcherProvider.IO()) {
+                try {
+                    val response = repository.fetchArtDetail(id = objectNumber)
+                    _detailUiState.value = DetailUiState.Success(response)
+                    Log.d("naz", "response in detail screen is: ${response.title}")
+                } catch (ex: Exception) {
+                    _detailUiState.value =
+                        DetailUiState.Error(message = ex.message ?: "Unknown error")
+                } finally {
+                    _isRefreshing.value = false
+                }
+            }
+        }
+    }
+
+    sealed class OverviewUiState {
+        object Empty : OverviewUiState()
+        object Loading : OverviewUiState()
+        class Success(val data: Flow<PagingData<ArtGroup>>) : OverviewUiState()
+        class Error(val message: String) : OverviewUiState()
+    }
+
+    sealed class DetailUiState {
+        object Empty : DetailUiState()
+        object Loading : DetailUiState()
+        class Success(val data: DetailItem) : DetailUiState()
+        class Error(val message: String) : DetailUiState()
     }
 }

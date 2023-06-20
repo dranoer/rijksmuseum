@@ -14,11 +14,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
-import com.dranoer.rijksmuseum.ui.ArtItem
+import com.dranoer.rijksmuseum.ui.DetailItem
 import com.dranoer.rijksmuseum.ui.theme.RijksmuseumTheme
 
 @Composable
-fun DetailItem(item: ArtItem) {
+fun DetailItem(item: DetailItem) {
     BoxWithConstraints(
         modifier = Modifier
             .fillMaxSize()
@@ -39,6 +39,7 @@ fun DetailItem(item: ArtItem) {
                 modifier = Modifier.requiredHeight(500.dp),
                 alpha = 1F,
                 artist = item.artist,
+                title = item.title,
                 description = item.description,
             )
             //endregion
@@ -52,13 +53,12 @@ fun DetailItem(item: ArtItem) {
 fun HeaderView_Normal() {
     RijksmuseumTheme() {
         DetailItem(
-            ArtItem(
+            DetailItem(
                 id = "1",
                 artist = "Artist 1",
                 title = "Title 1",
                 description = "This is a description for artwork number 1",
                 imageUrl = "",
-                headerImageUrl = "",
             )
         )
     }

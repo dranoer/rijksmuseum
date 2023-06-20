@@ -24,10 +24,10 @@ import androidx.navigation.compose.rememberNavController
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.dranoer.rijksmuseum.MainViewModel
-import com.dranoer.rijksmuseum.MainViewModel.UiState.Empty
-import com.dranoer.rijksmuseum.MainViewModel.UiState.Error
-import com.dranoer.rijksmuseum.MainViewModel.UiState.Loading
-import com.dranoer.rijksmuseum.MainViewModel.UiState.Success
+import com.dranoer.rijksmuseum.MainViewModel.OverviewUiState.Empty
+import com.dranoer.rijksmuseum.MainViewModel.OverviewUiState.Error
+import com.dranoer.rijksmuseum.MainViewModel.OverviewUiState.Loading
+import com.dranoer.rijksmuseum.MainViewModel.OverviewUiState.Success
 import com.dranoer.rijksmuseum.R
 import com.dranoer.rijksmuseum.ui.ArtGroup
 import com.dranoer.rijksmuseum.ui.component.Overview
@@ -41,7 +41,7 @@ fun OverviewScreen(
     viewModel: MainViewModel = hiltViewModel(),
     navController: NavController,
 ) {
-    val state = viewModel.uiState.collectAsState().value
+    val state = viewModel.overviewUiState.collectAsState().value
 
     Surface(
         modifier = modifier.fillMaxSize(),
@@ -58,7 +58,7 @@ fun OverviewScreen(
 
             is Success -> {
                 val lazyPagingItems = state.data.collectAsLazyPagingItems()
-                LoadedScreen(
+                LoadedOverviewScreen(
                     modifier = Modifier.fillMaxSize(),
                     artGroups = lazyPagingItems,
                     viewModel = viewModel,
@@ -72,7 +72,7 @@ fun OverviewScreen(
 }
 
 @Composable
-fun LoadedScreen(
+fun LoadedOverviewScreen(
     artGroups: LazyPagingItems<ArtGroup>,
     modifier: Modifier,
     viewModel: MainViewModel,
@@ -102,7 +102,7 @@ fun LoadedScreen(
                     onRefresh = { viewModel.fetchArts() },
                 ) {
                     Overview(lazyPagingItems = artGroups) { item ->
-                        navController.navigate("detail/${item.id}")
+                        navController.navigate("detail/${item.objectNumber}")
                     }
                 }
             }

@@ -36,6 +36,7 @@ private fun OverviewPreview_SingleGroup() {
     RijksmuseumTheme {
         val artItem1 = ArtItem(
             id = "1",
+            objectNumber = "1",
             artist = "Artist 1",
             title = "Title 1",
             description = "This is a description for artwork number 1",
@@ -44,6 +45,7 @@ private fun OverviewPreview_SingleGroup() {
         )
         val artItem2 = ArtItem(
             id = "2",
+            objectNumber = "2",
             artist = "Artist 2",
             title = "Title 2",
             description = "This is a description for artwork number 2",
@@ -66,6 +68,7 @@ private fun OverviewPreview_MultipleGroups() {
     RijksmuseumTheme {
         val artItem1 = ArtItem(
             id = "1",
+            objectNumber = "1",
             artist = "Artist 1",
             title = "Title 1",
             description = "This is a description for artwork number 1",
@@ -74,6 +77,7 @@ private fun OverviewPreview_MultipleGroups() {
         )
         val artItem2 = ArtItem(
             id = "2",
+            objectNumber = "2",
             artist = "Artist 2",
             title = "Title 2",
             description = "This is a description for artwork number 2",
@@ -86,6 +90,7 @@ private fun OverviewPreview_MultipleGroups() {
         )
         val artItem3 = ArtItem(
             id = "3",
+            objectNumber = "3",
             artist = "Artist 3",
             title = "Title 3",
             description = "This is a description for artwork number 3",
@@ -94,6 +99,7 @@ private fun OverviewPreview_MultipleGroups() {
         )
         val artItem4 = ArtItem(
             id = "4",
+            objectNumber = "4",
             artist = "Artist 4",
             title = "Title 4",
             description = "This is a description for artwork number 4",
@@ -104,7 +110,7 @@ private fun OverviewPreview_MultipleGroups() {
             author = "Art Group 2",
             artItems = listOf(artItem3, artItem4)
         )
-        
+
         OverviewNonPaged(
             artGroups = listOf(artGroup1, artGroup2),
             artItem = artItem1,

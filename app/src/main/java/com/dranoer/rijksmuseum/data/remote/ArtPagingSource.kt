@@ -37,6 +37,7 @@ class ArtPagingSource(
         return artResponse.artObjects.map { item ->
             ArtItem(
                 id = item.id,
+                objectNumber = item.objectNumber,
                 artist = item.artist ?: "",
                 title = item.title ?: "",
                 description = item.description ?: "",

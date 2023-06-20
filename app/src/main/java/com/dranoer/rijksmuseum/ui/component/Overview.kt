@@ -12,18 +12,19 @@ import androidx.paging.compose.items
 import com.dranoer.rijksmuseum.ui.ArtGroup
 import com.dranoer.rijksmuseum.ui.ArtItem
 import com.dranoer.rijksmuseum.ui.theme.RijksmuseumTheme
+import com.dranoer.rijksmuseum.ui.util.OnClickListener
 
 @Composable
 fun Overview(
     lazyPagingItems: LazyPagingItems<ArtGroup>,
-    onItemClick: (ArtItem) -> Unit,
+    callback: OnClickListener?,
 ) {
     LazyColumn(
         modifier = Modifier.padding(start = 20.dp, top = 2.dp, end = 20.dp, bottom = 24.dp),
     ) {
         items(lazyPagingItems) { artGroup ->
             artGroup?.artItems?.forEach { artItem ->
-                OverviewItem(artGroup, artItem, onItemClick)
+                OverviewItem(artGroup, artItem, callback)
             }
         }
     }
@@ -58,7 +59,7 @@ private fun OverviewPreview_SingleGroup() {
         )
 
         // A fake Overview composable that doesn't use paging
-        OverviewNonPaged(artGroups = listOf(artGroup), artItem = artItem1, onItemClick = {})
+        OverviewNonPaged(artGroups = listOf(artGroup), artItem = artItem1, onItemClick = null)
     }
 }
 
@@ -114,15 +115,16 @@ private fun OverviewPreview_MultipleGroups() {
         OverviewNonPaged(
             artGroups = listOf(artGroup1, artGroup2),
             artItem = artItem1,
-            onItemClick = {})
+            onItemClick = null
+        )
     }
 }
 
 @Composable
-fun OverviewNonPaged(artGroups: List<ArtGroup>, artItem: ArtItem, onItemClick: (ArtItem) -> Unit) {
+fun OverviewNonPaged(artGroups: List<ArtGroup>, artItem: ArtItem, onItemClick: OnClickListener?) {
     LazyColumn {
         items(artGroups) { group ->
-            OverviewItem(artGroup = group, artItem = artItem, onItemClick = onItemClick)
+            OverviewItem(artGroup = group, artItem = artItem, callback = onItemClick)
         }
     }
 }

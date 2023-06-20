@@ -5,13 +5,15 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.dranoer.rijksmuseum.ui.screen.DetailScreen
 import com.dranoer.rijksmuseum.ui.screen.OverviewScreen
 import com.dranoer.rijksmuseum.ui.theme.RijksmuseumTheme
+import com.dranoer.rijksmuseum.ui.util.Const
 import com.dranoer.rijksmuseum.ui.util.Route.Detail
 import com.dranoer.rijksmuseum.ui.util.Route.Overview
 import dagger.hilt.android.AndroidEntryPoint
@@ -31,7 +33,6 @@ class MainActivity : ComponentActivity() {
 @Composable
 private fun AppScreen() {
     val navController = rememberNavController()
-    val viewModel: MainViewModel = hiltViewModel()
 
     NavHost(
         navController = navController,
@@ -39,13 +40,29 @@ private fun AppScreen() {
     ) {
         //region Overview Screen
         composable(route = Overview.route) {
-            OverviewScreen(navController = navController)
+            OverviewScreen(
+                onClickToDetailScreen = { id ->
+                    navController.navigate(
+                        Detail.createRoute(id = id)
+                    )
+                })
         } //endregion
 
         //region Detail Screen
-        composable(route = "${Detail.route}/{itemId}") { backStackEntry ->
-            val itemId = backStackEntry.arguments?.getString("itemId")
-            itemId?.let { DetailScreen(navController = navController, id = it) }
+        composable(
+            route = Detail.route,
+            arguments = listOf(
+                navArgument(Const.DETAIL_ID) {
+                    type = NavType.StringType
+                }
+            )
+        ) { backStackEntry ->
+            val detailId = backStackEntry.arguments?.getString(Const.DETAIL_ID)
+            requireNotNull(detailId) { "Item id wasnt found!" }
+            DetailScreen(
+                id = detailId,
+                backPress = { navController.navigateUp() }
+            )
         } //endregion
     }
 }

@@ -15,6 +15,7 @@ import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -23,13 +24,15 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.dranoer.rijksmuseum.MainViewModel
-import com.dranoer.rijksmuseum.MainViewModel.DetailUiState.*
+import com.dranoer.rijksmuseum.MainViewModel.DetailUiState.Empty
+import com.dranoer.rijksmuseum.MainViewModel.DetailUiState.Error
+import com.dranoer.rijksmuseum.MainViewModel.DetailUiState.Loading
+import com.dranoer.rijksmuseum.MainViewModel.DetailUiState.Success
 import com.dranoer.rijksmuseum.R
 import com.dranoer.rijksmuseum.ui.DetailItem
-import com.dranoer.rijksmuseum.ui.component.DetailItem
+import com.dranoer.rijksmuseum.ui.component.DetailItemView
 import com.dranoer.rijksmuseum.ui.theme.RijksmuseumTheme
 
 @Composable
@@ -37,7 +40,7 @@ fun DetailScreen(
     modifier: Modifier = Modifier,
     viewModel: MainViewModel = hiltViewModel(),
     id: String,
-    navController: NavController,
+    backPress: () -> Unit,
 ) {
     fun launch() {
         viewModel.fetchArtDetail(id)
@@ -45,9 +48,11 @@ fun DetailScreen(
 
     launch()
 
-    Surface(
-        modifier = modifier.fillMaxSize(),
-    ) {
+    LaunchedEffect(key1 = id) {
+        viewModel.fetchArtDetail(objectNumber = id)
+    }
+
+    Surface(modifier = modifier.fillMaxSize()) {
         val state = viewModel.detailUiState.collectAsState().value
         //region UI State
         when (state) {
@@ -59,12 +64,7 @@ fun DetailScreen(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) { CircularProgressIndicator() }
 
-            is Success -> {
-                LoadedDetailScreen(
-                    detail = state.data,
-                    navController = navController,
-                )
-            }
+            is Success -> LoadedDetailScreen(detail = state.data, backPress = backPress)
 
             is Error -> Text(text = "Error ${state.message}")
         } //endregion
@@ -74,7 +74,7 @@ fun DetailScreen(
 @Composable
 fun LoadedDetailScreen(
     detail: DetailItem?,
-    navController: NavController,
+    backPress: () -> Unit,
 ) {
     Scaffold(
         //region TopAppBar
@@ -82,7 +82,7 @@ fun LoadedDetailScreen(
             TopAppBar(
                 title = {},
                 navigationIcon = {
-                    IconButton(onClick = { navController.navigateUp() }) {
+                    IconButton(onClick = { backPress() }) {
                         Icon(
                             imageVector = Icons.Filled.ArrowBack,
                             contentDescription = stringResource(id = R.string.app_name),
@@ -102,7 +102,7 @@ fun LoadedDetailScreen(
                     .padding(0.dp),
             ) {
                 detail?.let { detailItem ->
-                    DetailItem(item = detailItem)
+                    DetailItemView(item = detailItem)
                 }
             }
         } //endregion
@@ -115,7 +115,7 @@ fun LoadedDetailScreen(
 private fun DetailPreview_Normal() {
     val navController = rememberNavController()
     RijksmuseumTheme {
-        DetailScreen(id = "1", navController = navController)
+        DetailScreen(id = "1", backPress = {})
     }
 }
 //endregion

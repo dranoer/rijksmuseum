@@ -72,7 +72,6 @@ class MainViewModel @Inject constructor(
     fun fetchArtDetail(objectNumber: String) {
         viewModelScope.launch {
             _detailUiState.value = DetailUiState.Loading
-            _isRefreshing.value = true
 
             launch(coroutineDispatcherProvider.IO()) {
                 try {
@@ -82,8 +81,6 @@ class MainViewModel @Inject constructor(
                 } catch (ex: Exception) {
                     _detailUiState.value =
                         DetailUiState.Error(message = ex.message ?: "Unknown error")
-                } finally {
-                    _isRefreshing.value = false
                 }
             }
         }

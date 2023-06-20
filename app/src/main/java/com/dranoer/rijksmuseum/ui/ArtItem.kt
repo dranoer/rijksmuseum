@@ -7,7 +7,7 @@ data class ArtGroup(
 
 data class ArtItem(
     val id: String,
-    val objectNumber: String?,
+    val objectNumber: String,
     val artist: String,
     val title: String,
     val description: String,

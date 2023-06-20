@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -26,17 +25,16 @@ import coil.compose.rememberAsyncImagePainter
 import com.dranoer.rijksmuseum.ui.ArtGroup
 import com.dranoer.rijksmuseum.ui.ArtItem
 import com.dranoer.rijksmuseum.ui.theme.RijksmuseumTheme
+import com.dranoer.rijksmuseum.ui.util.OnClickListener
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun OverviewItem(artGroup: ArtGroup?, artItem: ArtItem?, onItemClick: (ArtItem) -> Unit) {
+fun OverviewItem(artGroup: ArtGroup?, artItem: ArtItem?, callback: OnClickListener?) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(top = 18.dp)
-            .clickable { artItem?.let { onItemClick(it) } },
+            .clickable { artItem?.let { callback?.onClick(it) } },
         shape = RoundedCornerShape(16),
-        onClick = { artItem?.let { onItemClick(it) } }
     ) {
         Row(
             modifier = Modifier
@@ -96,7 +94,7 @@ private fun OverviewItem_Normal() {
             artItems = listOf(artItem)
         )
 
-        OverviewItem(artGroup = artGroup, artItem = artItem, onItemClick = {})
+        OverviewItem(artGroup = artGroup, artItem = artItem, callback = null)
     }
 }
 
@@ -118,7 +116,7 @@ private fun OverviewItemPreview_LongTitles() {
             artItems = listOf(artItem)
         )
 
-        OverviewItem(artGroup = artGroup, artItem = artItem, onItemClick = {})
+        OverviewItem(artGroup = artGroup, artItem = artItem, callback = null)
     }
 }
 
@@ -131,7 +129,7 @@ private fun OverviewItemPreview_NoItems() {
             artItems = emptyList()
         )
 
-        OverviewItem(artGroup = artGroup, artItem = null, onItemClick = {})
+        OverviewItem(artGroup = artGroup, artItem = null, callback = null)
     }
 }
 //endregion

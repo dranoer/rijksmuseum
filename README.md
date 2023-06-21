@@ -1,13 +1,28 @@
 # Rijksmuseum App
 
 This application utilizes the [Rijksmuseum API](https://data.rijksmuseum.nl/object-metadata/api/) to display artwork and related details.
+<br><br>
+
+## Application Structure 📚
+
+The application follows the Model-View-ViewModel (MVVM) architectural pattern. Here's a brief overview of the main components:
+
+- `data`: Contains remote data handling elements like API response models (`ArtResponse.kt`, `DetailResponse.kt`), data mappers (`ArtMapper.kt`, `DetailMapper.kt`), and the service interface for network requests (`WebService.kt`).
+
+- `di`: This is where all the dependencies for the app are provided, specifically in the `AppModule.kt`.
+
+- `domain`: Contains business logic components like repositories. For example, `ArtRepository.kt`.
+
+- `ui`: This package is dedicated to UI-related classes, further divided into components, screens, and utility classes. Components like `ArtView.kt` and `DetailView.kt` represent individual UI pieces. Screens like `DetailScreen.kt` and `OverviewScreen.kt` represent complete UI screens. Utility classes like `OnClickListener.kt` and `Route.kt` handle click events and navigation, respectively. Also `MainActivity.kt`, `MainViewModel.kt`, and `RijksmuseumApp.kt`present in the package.
+<br>
 
 ## Features 🚀
-
 - Overview page with a paginated list of items
 - Detail page providing more information about each artwork
 - Asynchronous data and image loading
-- Unit and UI tests
+- Tests
+- Automated publish CI/CD using GitHub Actions
+<br>
 
 ## Tech Stack 💻
 
@@ -23,5 +38,16 @@ The following libraries and tools have been used for this project:
 - **Retrofit** for making network requests.
 - **OkHttp3** for implementing interceptor, logging and networking.
 - **GSON Converter** for parsing JSON.
-- **JUnit & Espresso** for unit and UI testing.
-- **Compose Testing Libraries** for testing Jetpack Compose UIs.
+- **JUnit, MockK and Kotlinx Coroutines Test** for Testing.
+<br>
+
+## Future Improvements 🛠
+
+While the current state of the project is functional and robust, there's always room for growth and enhancement. Here are some areas that could be improved in the future:
+
+- **Expand Test Coverage**: Although some tests are already present, the test coverage could be broadened to encompass more cases, ensuring the reliability and stability of the application.
+
+- **Project Modularization**: Breaking the application down into modules could increase build speed, enable reuse of code, and aid in separating concerns even further. This would involve categorizing the code into more specific packages or even separate modules altogether.
+
+- **Enhanced Error Handling**: Currently, the application handles basic error scenarios. This could be expanded to more comprehensively manage different error types and provide more descriptive error messages to the user. This would enhance the user experience by providing clear feedback when something goes wrong.
+<br>

@@ -1,6 +1,5 @@
 package com.dranoer.rijksmuseum.ui.screen
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -17,9 +16,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
@@ -75,10 +74,7 @@ fun OverviewScreen(
 
                         SwipeRefresh(
                             state = rememberSwipeRefreshState(isRefreshing = isRefreshing),
-                            onRefresh = {
-                                viewModel.fetchArts()
-                                Log.d("MainViewModel", "5: ${System.currentTimeMillis()}")
-                            },
+                            onRefresh = { viewModel.fetchArts() },
                         ) {
                             LoadedOverviewScreen(
                                 lazyPagingItems,
@@ -87,7 +83,7 @@ fun OverviewScreen(
                         }
                     }
 
-                    is Error -> ErrorView(message = state.message)
+                    is Error -> ErrorView(message = state.message, viewModel::fetchArts)
                 } //endregion
             }
         }, //endregion
@@ -100,7 +96,12 @@ private fun LoadedOverviewScreen(
     callback: OnClickListener?,
 ) {
     LazyColumn(
-        modifier = Modifier.padding(start = 20.dp, top = 2.dp, end = 20.dp, bottom = 24.dp),
+        modifier = Modifier.padding(
+            start = dimensionResource(id = R.dimen.size_20),
+            top = dimensionResource(id = R.dimen.size_2),
+            dimensionResource(id = R.dimen.size_20),
+            dimensionResource(id = R.dimen.size_24)
+        ),
     ) {
         items(lazyPagingItems) { artGroup ->
             artGroup?.artItems?.forEach { artItem ->

@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.dranoer.rijksmuseum.R
@@ -29,21 +30,21 @@ fun DetailCardView(
         modifier = modifier
             .fillMaxWidth()
             .alpha(alpha),
-        shape = RoundedCornerShape(topStart = 40.dp, topEnd = 40.dp),
+        shape = RoundedCornerShape(topStart = dimensionResource(id = R.dimen.size_40), topEnd = dimensionResource(id = R.dimen.size_40)),
         color = Color.White
     ) {
         Column(
             modifier = Modifier.padding(
-                top = 20.dp,
-                start = 50.dp,
-                end = 50.dp,
-                bottom = 50.dp
+                top = dimensionResource(id = R.dimen.size_20),
+                start = dimensionResource(id = R.dimen.size_50),
+                end = dimensionResource(id = R.dimen.size_50),
+                bottom = dimensionResource(id = R.dimen.size_50)
             ),
         ) {
             //region Title
             Text(
                 modifier = Modifier
-                    .padding(top = 20.dp),
+                    .padding(top = dimensionResource(id = R.dimen.size_20)),
                 text = title ?: "",
                 style = MaterialTheme.typography.body1,
                 color = colorResource(id = R.color.black),
@@ -51,7 +52,7 @@ fun DetailCardView(
             //region Description
             Text(
                 modifier = Modifier
-                    .padding(top = 14.dp),
+                    .padding(top = dimensionResource(id = R.dimen.size_14)),
                 text = description ?: "",
                 maxLines = 5,
                 style = MaterialTheme.typography.subtitle1,
@@ -60,8 +61,8 @@ fun DetailCardView(
             //region Artist
             Text(
                 modifier = Modifier
-                    .padding(top = 14.dp),
-                text = "by $artist" ?: "",
+                    .padding(top = dimensionResource(id = R.dimen.size_14)),
+                text = "by $artist",
                 style = MaterialTheme.typography.caption,
                 color = colorResource(id = R.color.black),
             ) //endregion
@@ -72,7 +73,7 @@ fun DetailCardView(
 //region Preview
 @Preview
 @Composable
-fun DetailCardPreview() =
+private fun DetailCardPreview() =
     DetailCardView(
         modifier = Modifier.requiredHeight(200.dp),
         alpha = 40F,

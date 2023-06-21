@@ -20,9 +20,9 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.dranoer.rijksmuseum.MainViewModel
 import com.dranoer.rijksmuseum.MainViewModel.DetailUiState.Error
@@ -62,7 +62,7 @@ fun DetailScreen(
 }
 
 @Composable
-fun LoadedDetailScreen(
+private fun LoadedDetailScreen(
     detail: DetailItem?,
     backPress: () -> Unit,
 ) {
@@ -81,7 +81,7 @@ fun LoadedDetailScreen(
                     }
                 },
                 backgroundColor = colorResource(id = R.color.white),
-                elevation = 0.dp,
+                elevation = dimensionResource(id = R.dimen.size_0),
             )
         }, //endregion
         //region Content
@@ -89,7 +89,7 @@ fun LoadedDetailScreen(
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(0.dp),
+                    .padding(dimensionResource(id = R.dimen.size_0)),
             ) {
                 detail?.let { detailItem ->
                     DetailView(item = detailItem)

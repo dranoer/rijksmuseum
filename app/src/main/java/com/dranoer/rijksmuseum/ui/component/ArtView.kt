@@ -16,12 +16,13 @@ import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
+import com.dranoer.rijksmuseum.R
 import com.dranoer.rijksmuseum.ui.ArtGroup
 import com.dranoer.rijksmuseum.ui.ArtItem
 import com.dranoer.rijksmuseum.ui.theme.RijksmuseumTheme
@@ -32,13 +33,13 @@ fun ArtView(artGroup: ArtGroup?, artItem: ArtItem?, callback: OnClickListener?) 
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(top = 18.dp)
+            .padding(top = dimensionResource(id = R.dimen.size_18))
             .clickable { artItem?.let { callback?.onClick(it) } },
         shape = RoundedCornerShape(16),
     ) {
         Row(
             modifier = Modifier
-                .padding(start = 12.dp, top = 12.dp, end = 10.dp, bottom = 12.dp)
+                .padding(start = dimensionResource(id = R.dimen.size_12), top = dimensionResource(id = R.dimen.size_12), end = dimensionResource(id = R.dimen.size_10), bottom = dimensionResource(id = R.dimen.size_12))
                 .fillMaxWidth(),
             horizontalArrangement = Arrangement.Start,
         ) {
@@ -47,13 +48,13 @@ fun ArtView(artGroup: ArtGroup?, artItem: ArtItem?, callback: OnClickListener?) 
                 verticalArrangement = Arrangement.Center,
             ) {
                 Image(
-                    modifier = Modifier.size(80.dp),
+                    modifier = Modifier.size(dimensionResource(id = R.dimen.size_80)),
                     painter = rememberAsyncImagePainter(artItem?.imageUrl ?: ""),
                     contentDescription = "Image url: ${artItem?.imageUrl ?: ""}",
                 )
             } //endregion
             //region Spacer
-            Spacer(modifier = Modifier.width(8.dp)) //endregion
+            Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.size_8))) //endregion
             //region Info
             Column(
                 verticalArrangement = Arrangement.Center,
@@ -64,7 +65,7 @@ fun ArtView(artGroup: ArtGroup?, artItem: ArtItem?, callback: OnClickListener?) 
                     style = TextStyle(fontWeight = FontWeight.Bold, fontSize = 16.sp)
                 ) //endregion
                 //region Spacer
-                Spacer(modifier = Modifier.height(8.dp)) //endregion
+                Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.size_8))) //endregion
                 //region Title
                 Text(
                     text = artItem?.title ?: "",

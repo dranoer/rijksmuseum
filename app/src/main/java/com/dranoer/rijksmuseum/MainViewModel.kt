@@ -54,8 +54,7 @@ class MainViewModel @Inject constructor(
                     .cachedIn(viewModelScope)
                 _overviewUiState.value = OverviewUiState.Success(flow)
             } catch (ex: Exception) {
-                _overviewUiState.value =
-                    OverviewUiState.Error(message = ex.message ?: "Unknown error")
+                _overviewUiState.value = OverviewUiState.Error(message = ex.message ?: "Unknown error")
             } finally {
                 _isRefreshing.value = false
             }

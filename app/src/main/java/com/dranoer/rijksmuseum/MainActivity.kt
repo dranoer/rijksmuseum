@@ -45,7 +45,8 @@ private fun AppScreen() {
                     navController.navigate(
                         Detail.createRoute(id = id)
                     )
-                })
+                }
+            )
         } //endregion
 
         //region Detail Screen

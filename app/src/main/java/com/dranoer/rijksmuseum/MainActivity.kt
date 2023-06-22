@@ -41,14 +41,9 @@ private fun AppScreen() {
         //region Overview Screen
         composable(route = Overview.route) {
             OverviewScreen(
-                onClickToDetailScreen = { id ->
-                    navController.navigate(
-                        Detail.createRoute(id = id)
-                    )
-                }
+                navigateToDetail = { id -> navController.navigate(Detail.createRoute(id = id)) },
             )
         } //endregion
-
         //region Detail Screen
         composable(
             route = Detail.route,

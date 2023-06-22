@@ -33,7 +33,6 @@ import com.dranoer.rijksmuseum.ui.ArtItem
 import com.dranoer.rijksmuseum.ui.component.ArtView
 import com.dranoer.rijksmuseum.ui.component.ErrorView
 import com.dranoer.rijksmuseum.ui.theme.RijksmuseumTheme
-import com.dranoer.rijksmuseum.ui.util.OnClickListener
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 
@@ -41,7 +40,7 @@ import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 fun OverviewScreen(
     modifier: Modifier = Modifier,
     viewModel: MainViewModel = hiltViewModel(),
-    onClickToDetailScreen: (String) -> Unit = {},
+    navigateToDetail: (String) -> Unit,
 ) {
     val state = viewModel.overviewUiState.collectAsState().value
 
@@ -77,8 +76,8 @@ fun OverviewScreen(
                             onRefresh = { viewModel.fetchArts() },
                         ) {
                             LoadedOverviewScreen(
-                                lazyPagingItems,
-                                OnClickListener { item -> onClickToDetailScreen.invoke(item.objectNumber) },
+                                pagingItems = lazyPagingItems,
+                                navigateToDetail = navigateToDetail
                             )
                         }
                     }
@@ -92,8 +91,8 @@ fun OverviewScreen(
 
 @Composable
 private fun LoadedOverviewScreen(
-    lazyPagingItems: LazyPagingItems<ArtGroup>,
-    callback: OnClickListener?,
+    pagingItems: LazyPagingItems<ArtGroup>,
+    navigateToDetail: (String) -> Unit,
 ) {
     LazyColumn(
         modifier = Modifier.padding(
@@ -103,9 +102,11 @@ private fun LoadedOverviewScreen(
             dimensionResource(id = R.dimen.size_24)
         ),
     ) {
-        items(lazyPagingItems) { artGroup ->
+        items(pagingItems) { artGroup ->
             artGroup?.artItems?.forEach { artItem ->
-                ArtView(artGroup, artItem, callback)
+                ArtView(artGroup, artItem) {
+                    navigateToDetail(it.objectNumber)
+                }
             }
         }
     }
@@ -140,7 +141,7 @@ private fun OverviewPreview_SingleGroup() {
         )
 
         // A fake Overview composable that doesn't use paging
-        OverviewNonPaged(artGroups = listOf(artGroup), artItem = artItem1, onItemClick = null)
+        OverviewNonPaged(artGroups = listOf(artGroup), artItem = artItem1, onItemClicked = { })
     }
 }
 
@@ -196,7 +197,7 @@ private fun OverviewPreview_MultipleGroups() {
         OverviewNonPaged(
             artGroups = listOf(artGroup1, artGroup2),
             artItem = artItem1,
-            onItemClick = null
+            onItemClicked = { },
         )
     }
 }
@@ -205,11 +206,11 @@ private fun OverviewPreview_MultipleGroups() {
 private fun OverviewNonPaged(
     artGroups: List<ArtGroup>,
     artItem: ArtItem,
-    onItemClick: OnClickListener?
+    onItemClicked: (ArtItem) -> Unit
 ) {
     LazyColumn {
         items(artGroups) { group ->
-            ArtView(artGroup = group, artItem = artItem, callback = onItemClick)
+            ArtView(artGroup = group, artItem = artItem, onItemClicked = onItemClicked)
         }
     }
 }

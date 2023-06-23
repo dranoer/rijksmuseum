@@ -75,10 +75,14 @@ fun OverviewScreen(
                             state = rememberSwipeRefreshState(isRefreshing = isRefreshing),
                             onRefresh = { viewModel.fetchArts() },
                         ) {
-                            LoadedOverviewScreen(
-                                pagingItems = lazyPagingItems,
-                                navigateToDetail = navigateToDetail
-                            )
+                            if (lazyPagingItems.itemCount > 0) {
+                                LoadedOverviewScreen(
+                                    pagingItems = lazyPagingItems,
+                                    navigateToDetail = navigateToDetail
+                                )
+                            } else {
+                                CircularProgressIndicator()
+                            }
                         }
                     }
 

@@ -3,4 +3,5 @@
     <string name="retry">Retry</string>
     <string name="error">Unknown error</string>
     <string name="detail_image">Detail image</string>
+    <string name="not_found">Item id wasnt found!</string>
 </resources>

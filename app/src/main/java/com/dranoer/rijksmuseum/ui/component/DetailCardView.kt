@@ -14,6 +14,7 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.dranoer.rijksmuseum.R
@@ -45,7 +46,7 @@ fun DetailCardView(
             Text(
                 modifier = Modifier
                     .padding(top = dimensionResource(id = R.dimen.size_20)),
-                text = title ?: "",
+                text = title ?: stringResource(id = R.string.empty_string),
                 style = MaterialTheme.typography.body1,
                 color = colorResource(id = R.color.black),
             ) //endregion

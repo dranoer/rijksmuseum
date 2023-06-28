@@ -12,7 +12,6 @@ import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
@@ -65,14 +64,15 @@ fun OverviewScreen(
             ) {
                 //region UI State
                 when (state) {
-                    is Loading -> CircularProgressIndicator()
+                    is Loading -> {
+                        if (!state.isRefreshing) CircularProgressIndicator()
+                    }
 
                     is Success -> {
-                        val isRefreshing by viewModel.isRefreshing.collectAsState()
                         val lazyPagingItems = state.data.collectAsLazyPagingItems()
 
                         SwipeRefresh(
-                            state = rememberSwipeRefreshState(isRefreshing = isRefreshing),
+                            state = rememberSwipeRefreshState(isRefreshing = state.isRefreshing),
                             onRefresh = { viewModel.fetchArts() },
                         ) {
                             if (lazyPagingItems.itemCount > 0) {
@@ -80,13 +80,15 @@ fun OverviewScreen(
                                     pagingItems = lazyPagingItems,
                                     navigateToDetail = navigateToDetail
                                 )
-                            } else {
+                            } else if (!state.isRefreshing) {
                                 CircularProgressIndicator()
                             }
                         }
                     }
 
-                    is Error -> ErrorView(message = state.message, viewModel::fetchArts)
+                    is Error -> {
+                        if (!state.isRefreshing) ErrorView(message = state.message, viewModel::fetchArts)
+                    }
                 } //endregion
             }
         }, //endregion

@@ -25,14 +25,11 @@ class MainViewModel @Inject constructor(
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : ViewModel() {
 
-    private val _overviewUiState = MutableStateFlow<OverviewUiState>(OverviewUiState.Loading)
+    private val _overviewUiState = MutableStateFlow<OverviewUiState>(OverviewUiState.Loading(isRefreshing = false))
     val overviewUiState: StateFlow<OverviewUiState> = _overviewUiState.asStateFlow()
 
-    private val _detailUiState = MutableStateFlow<DetailUiState>(DetailUiState.Loading)
+    private val _detailUiState = MutableStateFlow<DetailUiState>(DetailUiState.Loading(isRefreshing = false))
     val detailUiState: StateFlow<DetailUiState> = _detailUiState.asStateFlow()
-
-    private val _isRefreshing = MutableStateFlow(false)
-    val isRefreshing: StateFlow<Boolean> = _isRefreshing.asStateFlow()
 
     init {
         fetchArts()
@@ -40,8 +37,9 @@ class MainViewModel @Inject constructor(
 
     fun fetchArts(query: String = "") {
         viewModelScope.launch(dispatcher) {
-            _isRefreshing.value = true
-            try {
+            _overviewUiState.value = OverviewUiState.Loading(isRefreshing = true)
+
+            val result = try {
                 val flow = repository.fetchArtList(query)
                     .map { pagingData ->
                         pagingData.map { artItem ->
@@ -52,36 +50,45 @@ class MainViewModel @Inject constructor(
                         }
                     }
                     .cachedIn(viewModelScope)
-                _overviewUiState.value = OverviewUiState.Success(flow)
+                OverviewUiState.Success(flow)
             } catch (ex: Exception) {
-                _overviewUiState.value = OverviewUiState.Error(message = ex.message ?: "Unknown error")
-            } finally {
-                _isRefreshing.value = false
+                OverviewUiState.Error(message = ex.message ?: "Unknown error")
+            }
+
+            _overviewUiState.value = when (result) {
+                is OverviewUiState.Success -> result.copy(isRefreshing = false)
+                is OverviewUiState.Error -> result.copy(isRefreshing = false)
+                else -> result
             }
         }
     }
 
     fun fetchArtDetail(objectNumber: String) {
         viewModelScope.launch(dispatcher) {
-            try {
-                val response = repository.fetchArtDetail(id = objectNumber)
-                _detailUiState.value = DetailUiState.Success(response)
+            _detailUiState.value = DetailUiState.Loading(isRefreshing = true)
+            val result = try {
+                DetailUiState.Success(repository.fetchArtDetail(id = objectNumber))
             } catch (ex: Exception) {
-                _detailUiState.value =
-                    DetailUiState.Error(message = ex.message ?: "Unknown error")
+                DetailUiState.Error(message = ex.message ?: "Unknown error")
+            }
+
+            _detailUiState.value = when (result) {
+                is DetailUiState.Success -> result.copy(isRefreshing = false)
+                is DetailUiState.Error -> result.copy(isRefreshing = false)
+                else -> result
             }
         }
     }
 
     sealed class OverviewUiState {
-        object Loading : OverviewUiState()
-        data class Success(val data: Flow<PagingData<ArtGroup>>) : OverviewUiState()
-        data class Error(val message: String) : OverviewUiState()
+        data class Loading(val isRefreshing: Boolean = false) : OverviewUiState()
+        data class Success(val data: Flow<PagingData<ArtGroup>>, val isRefreshing: Boolean = false) : OverviewUiState()
+        data class Error(val message: String, val isRefreshing: Boolean = false) : OverviewUiState()
     }
 
     sealed class DetailUiState {
-        object Loading : DetailUiState()
-        data class Success(val data: DetailItem) : DetailUiState()
-        data class Error(val message: String) : DetailUiState()
+        data class Loading(val isRefreshing: Boolean = false) : DetailUiState()
+        data class Success(val data: DetailItem, val isRefreshing: Boolean = false) : DetailUiState()
+        data class Error(val message: String, val isRefreshing: Boolean = false) : DetailUiState()
     }
 }

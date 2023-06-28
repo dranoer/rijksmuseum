@@ -75,37 +75,13 @@ class MainViewModel @Inject constructor(
 
     sealed class OverviewUiState {
         object Loading : OverviewUiState()
-        class Success(val data: Flow<PagingData<ArtGroup>>) : OverviewUiState()
-        class Error(val message: String) : OverviewUiState() {
-            override fun equals(other: Any?): Boolean {
-                if (this === other) return true
-                if (javaClass != other?.javaClass) return false
-                other as Error
-                if (message != other.message) return false
-                return true
-            }
-
-            override fun hashCode(): Int {
-                return message.hashCode()
-            }
-        }
+        data class Success(val data: Flow<PagingData<ArtGroup>>) : OverviewUiState()
+        data class Error(val message: String) : OverviewUiState()
     }
 
     sealed class DetailUiState {
         object Loading : DetailUiState()
-        class Success(val data: DetailItem) : DetailUiState()
-        class Error(val message: String) : DetailUiState() {
-            override fun equals(other: Any?): Boolean {
-                if (this === other) return true
-                if (javaClass != other?.javaClass) return false
-                other as Error
-                if (message != other.message) return false
-                return true
-            }
-
-            override fun hashCode(): Int {
-                return message.hashCode()
-            }
-        }
+        data class Success(val data: DetailItem) : DetailUiState()
+        data class Error(val message: String) : DetailUiState()
     }
 }

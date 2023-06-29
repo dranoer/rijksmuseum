@@ -67,7 +67,7 @@ class MainViewModel @Inject constructor(
         viewModelScope.launch(dispatcher) {
             _detailUiState.value = DetailUiState.Loading(isRefreshing = true)
             val result = try {
-                DetailUiState.Success(repository.fetchArtDetail(id = objectNumber))
+                DetailUiState.Success(data = repository.fetchArtDetail(id = objectNumber))
             } catch (ex: Exception) {
                 DetailUiState.Error(message = ex.message ?: "Unknown error")
             }

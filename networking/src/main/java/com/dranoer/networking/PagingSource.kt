@@ -1,10 +1,9 @@
-package com.dranoer.networking
+package com.dranoer.rijksmuseum.networking
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.dranoer.networking.mapper.ArtMapper
-import com.dranoer.networking.model.ArtItem
-import java.lang.Exception
+import com.dranoer.rijksmuseum.networking.mapper.ArtMapper
+import com.dranoer.rijksmuseum.networking.model.ArtItem
 
 class PagingSource(
     private val service: WebService,

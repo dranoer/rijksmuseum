@@ -1,7 +1,7 @@
-package com.dranoer.networking.mapper
+package com.dranoer.rijksmuseum.networking.mapper
 
-import com.dranoer.networking.model.ArtItem
-import com.dranoer.networking.model.ArtResponse
+import com.dranoer.rijksmuseum.networking.model.ArtItem
+import com.dranoer.rijksmuseum.networking.model.ArtResponse
 
 class ArtMapper {
     fun map(artResponse: ArtResponse): List<ArtItem> {

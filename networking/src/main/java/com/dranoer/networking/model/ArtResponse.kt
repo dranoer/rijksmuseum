@@ -1,4 +1,4 @@
-package com.dranoer.networking.model
+package com.dranoer.rijksmuseum.networking.model
 
 import com.google.gson.annotations.SerializedName
 

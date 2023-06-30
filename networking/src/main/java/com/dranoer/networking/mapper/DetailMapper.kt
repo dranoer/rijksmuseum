@@ -1,7 +1,7 @@
-package com.dranoer.networking.mapper
+package com.dranoer.rijksmuseum.networking.mapper
 
-import com.dranoer.networking.model.DetailItem
-import com.dranoer.networking.model.DetailResponse
+import com.dranoer.rijksmuseum.networking.model.DetailItem
+import com.dranoer.rijksmuseum.networking.model.DetailResponse
 
 class DetailMapper {
     fun map(response: DetailResponse): DetailItem {

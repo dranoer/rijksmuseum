@@ -7,21 +7,21 @@ plugins {
 }
 
 android {
-    namespace 'com.dranoer.networking'
+    namespace 'com.dranoer.rijksmuseum.networking'
     compileSdk 33
 
-    defaultConfig {
-        applicationId "com.dranoer.networking"
-        minSdk 24
-        targetSdk 33
-        versionCode 1
-        versionName "1.0"
-
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        vectorDrawables {
-            useSupportLibrary true
-        }
-    }
+//    defaultConfig {
+//        applicationId "com.dranoer.networking"
+//        minSdk 24
+//        targetSdk 33
+//        versionCode 1
+//        versionName "1.0"
+//
+//        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+//        vectorDrawables {
+//            useSupportLibrary true
+//        }
+//    }
 
     buildTypes {
         release {

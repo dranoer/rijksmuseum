@@ -1,12 +1,12 @@
-package com.dranoer.rijksmuseum.data.remote
+package com.dranoer.rijksmuseum.networking
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.dranoer.rijksmuseum.data.remote.mapper.ArtMapper
-import com.dranoer.rijksmuseum.ui.ArtItem
-import java.lang.Exception
+import com.dranoer.rijksmuseum.networking.mapper.ArtMapper
+import com.dranoer.rijksmuseum.networking.model.ArtItem
+import javax.inject.Inject
 
-class PagingSource(
+class PagingSource @Inject constructor(
     private val service: WebService,
     private val query: String,
     private val artMapper: ArtMapper,

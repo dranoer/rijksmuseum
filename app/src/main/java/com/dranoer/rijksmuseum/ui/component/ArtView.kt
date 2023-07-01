@@ -20,26 +20,26 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
 import com.dranoer.rijksmuseum.R
-import com.dranoer.rijksmuseum.ui.ArtGroup
-import com.dranoer.rijksmuseum.ui.ArtItem
+import com.dranoer.rijksmuseum.networking.model.ArtGroup
+import com.dranoer.rijksmuseum.networking.model.ArtItem
 import com.dranoer.rijksmuseum.ui.theme.RijksmuseumTheme
-import com.dranoer.rijksmuseum.ui.util.OnClickListener
 
 @Composable
-fun ArtView(artGroup: ArtGroup?, artItem: ArtItem?, callback: OnClickListener?) {
+fun ArtView(artGroup: ArtGroup?, artItem: ArtItem?, onItemClicked: (ArtItem) -> Unit) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(top = dimensionResource(id = R.dimen.size_18))
-            .clickable { artItem?.let { callback?.onClick(it) } },
+            .clickable { artItem?.let { onItemClicked(it) } },
         shape = RoundedCornerShape(16),
     ) {
         Row(
             modifier = Modifier
-                .padding(start = dimensionResource(id = R.dimen.size_12), top = dimensionResource(id = R.dimen.size_12), end = dimensionResource(id = R.dimen.size_10), bottom = dimensionResource(id = R.dimen.size_12))
+                .padding(12.dp, 12.dp, 10.dp, 12.dp)
                 .fillMaxWidth(),
             horizontalArrangement = Arrangement.Start,
         ) {
@@ -95,7 +95,7 @@ private fun ArtView_Normal() {
             artItems = listOf(artItem)
         )
 
-        ArtView(artGroup = artGroup, artItem = artItem, callback = null)
+        ArtView(artGroup = artGroup, artItem = artItem, onItemClicked = {})
     }
 }
 
@@ -117,7 +117,7 @@ private fun ArtViewPreview_LongTitles() {
             artItems = listOf(artItem)
         )
 
-        ArtView(artGroup = artGroup, artItem = artItem, callback = null)
+        ArtView(artGroup = artGroup, artItem = artItem, onItemClicked = {})
     }
 }
 
@@ -130,7 +130,7 @@ private fun ArtViewPreview_NoItems() {
             artItems = emptyList()
         )
 
-        ArtView(artGroup = artGroup, artItem = null, callback = null)
+        ArtView(artGroup = artGroup, artItem = null, onItemClicked = {})
     }
 }
 //endregion

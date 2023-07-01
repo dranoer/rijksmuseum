@@ -1,4 +1,4 @@
-package com.dranoer.rijksmuseum.ui
+package com.dranoer.rijksmuseum.networking.model
 
 data class ArtGroup(
     val author: String,

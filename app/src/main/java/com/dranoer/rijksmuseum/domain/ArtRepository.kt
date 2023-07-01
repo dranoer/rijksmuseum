@@ -3,12 +3,12 @@ package com.dranoer.rijksmuseum.domain
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import com.dranoer.rijksmuseum.data.remote.PagingSource
-import com.dranoer.rijksmuseum.data.remote.WebService
-import com.dranoer.rijksmuseum.data.remote.mapper.ArtMapper
-import com.dranoer.rijksmuseum.data.remote.mapper.DetailMapper
-import com.dranoer.rijksmuseum.ui.ArtItem
-import com.dranoer.rijksmuseum.ui.DetailItem
+import com.dranoer.rijksmuseum.networking.PagingSource
+import com.dranoer.rijksmuseum.networking.WebService
+import com.dranoer.rijksmuseum.networking.mapper.ArtMapper
+import com.dranoer.rijksmuseum.networking.mapper.DetailMapper
+import com.dranoer.rijksmuseum.networking.model.ArtItem
+import com.dranoer.rijksmuseum.networking.model.DetailItem
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 

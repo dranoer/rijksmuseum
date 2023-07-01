@@ -1,7 +1,7 @@
-package com.dranoer.rijksmuseum.data.remote
+package com.dranoer.rijksmuseum.networking
 
-import com.dranoer.rijksmuseum.data.remote.model.DetailResponse
-import com.dranoer.rijksmuseum.data.remote.model.ArtResponse
+import com.dranoer.rijksmuseum.networking.model.ArtResponse
+import com.dranoer.rijksmuseum.networking.model.DetailResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query

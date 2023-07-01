@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -41,14 +42,9 @@ private fun AppScreen() {
         //region Overview Screen
         composable(route = Overview.route) {
             OverviewScreen(
-                onClickToDetailScreen = { id ->
-                    navController.navigate(
-                        Detail.createRoute(id = id)
-                    )
-                }
+                navigateToDetail = { id -> navController.navigate(Detail.createRoute(id = id)) },
             )
         } //endregion
-
         //region Detail Screen
         composable(
             route = Detail.route,
@@ -59,7 +55,7 @@ private fun AppScreen() {
             )
         ) { backStackEntry ->
             val detailId = backStackEntry.arguments?.getString(Const.DETAIL_ID)
-            requireNotNull(detailId) { "Item id wasnt found!" }
+            requireNotNull(detailId) { stringResource(id = R.string.not_found) }
             DetailScreen(
                 id = detailId,
                 backPress = { navController.navigateUp() }

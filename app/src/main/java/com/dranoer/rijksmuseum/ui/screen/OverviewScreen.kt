@@ -12,13 +12,12 @@ import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
@@ -28,12 +27,11 @@ import com.dranoer.rijksmuseum.MainViewModel.OverviewUiState.Error
 import com.dranoer.rijksmuseum.MainViewModel.OverviewUiState.Loading
 import com.dranoer.rijksmuseum.MainViewModel.OverviewUiState.Success
 import com.dranoer.rijksmuseum.R
-import com.dranoer.rijksmuseum.ui.ArtGroup
-import com.dranoer.rijksmuseum.ui.ArtItem
+import com.dranoer.rijksmuseum.networking.model.ArtGroup
+import com.dranoer.rijksmuseum.networking.model.ArtItem
 import com.dranoer.rijksmuseum.ui.component.ArtView
 import com.dranoer.rijksmuseum.ui.component.ErrorView
 import com.dranoer.rijksmuseum.ui.theme.RijksmuseumTheme
-import com.dranoer.rijksmuseum.ui.util.OnClickListener
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 
@@ -41,7 +39,7 @@ import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 fun OverviewScreen(
     modifier: Modifier = Modifier,
     viewModel: MainViewModel = hiltViewModel(),
-    onClickToDetailScreen: (String) -> Unit = {},
+    navigateToDetail: (String) -> Unit,
 ) {
     val state = viewModel.overviewUiState.collectAsState().value
 
@@ -66,24 +64,31 @@ fun OverviewScreen(
             ) {
                 //region UI State
                 when (state) {
-                    is Loading -> CircularProgressIndicator()
+                    is Loading -> {
+                        if (!state.isRefreshing) CircularProgressIndicator()
+                    }
 
                     is Success -> {
-                        val isRefreshing by viewModel.isRefreshing.collectAsState()
                         val lazyPagingItems = state.data.collectAsLazyPagingItems()
 
                         SwipeRefresh(
-                            state = rememberSwipeRefreshState(isRefreshing = isRefreshing),
+                            state = rememberSwipeRefreshState(isRefreshing = state.isRefreshing),
                             onRefresh = { viewModel.fetchArts() },
                         ) {
-                            LoadedOverviewScreen(
-                                lazyPagingItems,
-                                OnClickListener { item -> onClickToDetailScreen.invoke(item.objectNumber) },
-                            )
+                            if (lazyPagingItems.itemCount > 0) {
+                                LoadedOverviewScreen(
+                                    pagingItems = lazyPagingItems,
+                                    navigateToDetail = navigateToDetail
+                                )
+                            } else if (!state.isRefreshing) {
+                                CircularProgressIndicator()
+                            }
                         }
                     }
 
-                    is Error -> ErrorView(message = state.message, viewModel::fetchArts)
+                    is Error -> {
+                        if (!state.isRefreshing) ErrorView(message = state.message, viewModel::fetchArts)
+                    }
                 } //endregion
             }
         }, //endregion
@@ -92,20 +97,15 @@ fun OverviewScreen(
 
 @Composable
 private fun LoadedOverviewScreen(
-    lazyPagingItems: LazyPagingItems<ArtGroup>,
-    callback: OnClickListener?,
+    pagingItems: LazyPagingItems<ArtGroup>,
+    navigateToDetail: (String) -> Unit,
 ) {
-    LazyColumn(
-        modifier = Modifier.padding(
-            start = dimensionResource(id = R.dimen.size_20),
-            top = dimensionResource(id = R.dimen.size_2),
-            dimensionResource(id = R.dimen.size_20),
-            dimensionResource(id = R.dimen.size_24)
-        ),
-    ) {
-        items(lazyPagingItems) { artGroup ->
+    LazyColumn(modifier = Modifier.padding(20.dp, 2.dp, 20.dp, 24.dp)) {
+        items(pagingItems) { artGroup ->
             artGroup?.artItems?.forEach { artItem ->
-                ArtView(artGroup, artItem, callback)
+                ArtView(artGroup, artItem) {
+                    navigateToDetail(it.objectNumber)
+                }
             }
         }
     }
@@ -140,7 +140,7 @@ private fun OverviewPreview_SingleGroup() {
         )
 
         // A fake Overview composable that doesn't use paging
-        OverviewNonPaged(artGroups = listOf(artGroup), artItem = artItem1, onItemClick = null)
+        OverviewNonPaged(artGroups = listOf(artGroup), artItem = artItem1, onItemClicked = { })
     }
 }
 
@@ -196,7 +196,7 @@ private fun OverviewPreview_MultipleGroups() {
         OverviewNonPaged(
             artGroups = listOf(artGroup1, artGroup2),
             artItem = artItem1,
-            onItemClick = null
+            onItemClicked = { },
         )
     }
 }
@@ -205,11 +205,11 @@ private fun OverviewPreview_MultipleGroups() {
 private fun OverviewNonPaged(
     artGroups: List<ArtGroup>,
     artItem: ArtItem,
-    onItemClick: OnClickListener?
+    onItemClicked: (ArtItem) -> Unit
 ) {
     LazyColumn {
         items(artGroups) { group ->
-            ArtView(artGroup = group, artItem = artItem, callback = onItemClick)
+            ArtView(artGroup = group, artItem = artItem, onItemClicked = onItemClicked)
         }
     }
 }

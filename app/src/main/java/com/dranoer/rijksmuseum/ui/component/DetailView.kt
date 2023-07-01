@@ -16,7 +16,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import coil.compose.rememberAsyncImagePainter
 import com.dranoer.rijksmuseum.R
-import com.dranoer.rijksmuseum.ui.DetailItem
+import com.dranoer.rijksmuseum.networking.model.DetailItem
 import com.dranoer.rijksmuseum.ui.theme.RijksmuseumTheme
 
 @Composable

@@ -15,9 +15,9 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
@@ -27,8 +27,8 @@ import com.dranoer.rijksmuseum.MainViewModel.OverviewUiState.Error
 import com.dranoer.rijksmuseum.MainViewModel.OverviewUiState.Loading
 import com.dranoer.rijksmuseum.MainViewModel.OverviewUiState.Success
 import com.dranoer.rijksmuseum.R
-import com.dranoer.rijksmuseum.ui.ArtGroup
-import com.dranoer.rijksmuseum.ui.ArtItem
+import com.dranoer.rijksmuseum.networking.model.ArtGroup
+import com.dranoer.rijksmuseum.networking.model.ArtItem
 import com.dranoer.rijksmuseum.ui.component.ArtView
 import com.dranoer.rijksmuseum.ui.component.ErrorView
 import com.dranoer.rijksmuseum.ui.theme.RijksmuseumTheme
@@ -100,14 +100,7 @@ private fun LoadedOverviewScreen(
     pagingItems: LazyPagingItems<ArtGroup>,
     navigateToDetail: (String) -> Unit,
 ) {
-    LazyColumn(
-        modifier = Modifier.padding(
-            start = dimensionResource(id = R.dimen.size_20),
-            top = dimensionResource(id = R.dimen.size_2),
-            dimensionResource(id = R.dimen.size_20),
-            dimensionResource(id = R.dimen.size_24)
-        ),
-    ) {
+    LazyColumn(modifier = Modifier.padding(20.dp, 2.dp, 20.dp, 24.dp)) {
         items(pagingItems) { artGroup ->
             artGroup?.artItems?.forEach { artItem ->
                 ArtView(artGroup, artItem) {

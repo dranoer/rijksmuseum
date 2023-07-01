@@ -3,8 +3,8 @@ package com.dranoer.rijksmuseum
 import androidx.paging.PagingData
 import com.dranoer.rijksmuseum.MainViewModel.OverviewUiState
 import com.dranoer.rijksmuseum.domain.ArtRepository
-import com.dranoer.rijksmuseum.ui.ArtItem
-import com.dranoer.rijksmuseum.ui.DetailItem
+import com.dranoer.rijksmuseum.networking.model.ArtItem
+import com.dranoer.rijksmuseum.networking.model.DetailItem
 import io.mockk.coEvery
 import io.mockk.mockk
 import junit.framework.Assert.assertTrue
@@ -32,7 +32,7 @@ class MainViewModelTest {
     fun setup() {
         Dispatchers.setMain(testDispatcher)
         repository = mockk()
-        viewModel = MainViewModel(repository)
+        viewModel = MainViewModel(repository, testDispatcher)
     }
 
     @After

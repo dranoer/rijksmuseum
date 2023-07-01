@@ -6,11 +6,10 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import androidx.paging.map
 import com.dranoer.rijksmuseum.domain.ArtRepository
-import com.dranoer.rijksmuseum.ui.ArtGroup
-import com.dranoer.rijksmuseum.ui.DetailItem
+import com.dranoer.rijksmuseum.networking.model.ArtGroup
+import com.dranoer.rijksmuseum.networking.model.DetailItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -22,7 +21,7 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val repository: ArtRepository,
-    private val dispatcher: CoroutineDispatcher = Dispatchers.IO,
+    private val coroutineDispatcher: CoroutineDispatcher,
 ) : ViewModel() {
 
     private val _overviewUiState = MutableStateFlow<OverviewUiState>(OverviewUiState.Loading(isRefreshing = false))
@@ -36,7 +35,7 @@ class MainViewModel @Inject constructor(
     }
 
     fun fetchArts(query: String = "") {
-        viewModelScope.launch(dispatcher) {
+        viewModelScope.launch(coroutineDispatcher) {
             _overviewUiState.value = OverviewUiState.Loading(isRefreshing = true)
 
             val result = try {
@@ -64,7 +63,7 @@ class MainViewModel @Inject constructor(
     }
 
     fun fetchArtDetail(objectNumber: String) {
-        viewModelScope.launch(dispatcher) {
+        viewModelScope.launch(coroutineDispatcher) {
             _detailUiState.value = DetailUiState.Loading(isRefreshing = true)
             val result = try {
                 DetailUiState.Success(data = repository.fetchArtDetail(id = objectNumber))

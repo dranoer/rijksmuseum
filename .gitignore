@@ -1,18 +1,20 @@
+# Project-specific ignore patterns
+
+# IntelliJ IDEA
 *.iml
+.idea/
+
+# Gradle build
 .gradle
+
+# Local properties
 /local.properties
-/.idea/caches
-/.idea/libraries
-/.idea/modules.xml
-/.idea/workspace.xml
-/.idea/navEditor.xml
-/.idea/assetWizardSettings.xml
-.idea/gradle.xml
-.idea/misc.xml
-.idea/vcs.xml
+
+# macOS specific
 .DS_Store
+
+# Build output directories
 /build
 /captures
 .externalNativeBuild
 .cxx
-local.properties

@@ -48,6 +48,21 @@ While the current state of the project is functional and robust, there's always 
 - **Expand Test Coverage**: Although some tests are already present, the test coverage could be broadened to encompass more cases, ensuring the reliability and stability of the application.
 
 - **Project Modularization**: Breaking the application down into modules could increase build speed, enable reuse of code, and aid in separating concerns even further. This would involve categorizing the code into more specific packages or even separate modules altogether.
-
+  
 - **Enhanced Error Handling**: Currently, the application handles basic error scenarios. This could be expanded to more comprehensively manage different error types and provide more descriptive error messages to the user. This would enhance the user experience by providing clear feedback when something goes wrong.
+<br>
+
+---
+<br>
+
+## Latest Update 🎉
+
+Project modularization, an area identified earlier for future improvements, has been implemented. The application now has a more structured codebase organized into two modules: `app` and `networking`.
+
+- The `app` module contains all user interface related components and logic, essentially all the user-facing elements of the application.
+
+- The `networking` module, on the other hand, encapsulates all network-related tasks and entities. It includes the API service definitions, response models, and data mappers.
+
+This significant architectural update has enhanced the clarity and maintainability of the codebase, paving the way for efficient future developments and iterations.
+
 <br>

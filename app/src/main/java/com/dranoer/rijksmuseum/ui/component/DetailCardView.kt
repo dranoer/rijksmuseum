@@ -1,6 +1,7 @@
 package com.dranoer.rijksmuseum.ui.component
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeight
@@ -10,7 +11,6 @@ import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.dimensionResource
@@ -30,7 +30,7 @@ fun DetailCardView(
     Surface(
         modifier = modifier
             .fillMaxWidth()
-            .alpha(alpha),
+            .aspectRatio(1f),
         shape = RoundedCornerShape(topStart = dimensionResource(id = R.dimen.size_40), topEnd = dimensionResource(id = R.dimen.size_40)),
         color = Color.White
     ) {

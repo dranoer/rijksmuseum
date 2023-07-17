@@ -24,19 +24,19 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.dranoer.rijksmuseum.networking.model.DetailItem
 import com.dranoer.rijksmuseum.MainViewModel
 import com.dranoer.rijksmuseum.MainViewModel.DetailUiState.Error
 import com.dranoer.rijksmuseum.MainViewModel.DetailUiState.Loading
 import com.dranoer.rijksmuseum.MainViewModel.DetailUiState.Success
 import com.dranoer.rijksmuseum.R
+import com.dranoer.rijksmuseum.networking.model.DetailItem
 import com.dranoer.rijksmuseum.ui.component.DetailView
 import com.dranoer.rijksmuseum.ui.theme.RijksmuseumTheme
 
 @Composable
 fun DetailScreen(
     modifier: Modifier = Modifier,
-    viewModel: MainViewModel = hiltViewModel(),
+    viewModel: MainViewModel,
     id: String,
     backPress: () -> Unit,
 ) {
@@ -104,7 +104,7 @@ private fun LoadedDetailScreen(
 @Composable
 private fun DetailPreview_Normal() {
     RijksmuseumTheme {
-        DetailScreen(id = "1", backPress = {})
+        DetailScreen(id = "1", viewModel = hiltViewModel(), backPress = {})
     }
 }
 //endregion

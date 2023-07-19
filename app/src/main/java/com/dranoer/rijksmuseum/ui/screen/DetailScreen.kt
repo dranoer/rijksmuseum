@@ -100,7 +100,7 @@ private fun LoadedDetailScreen(
 }
 
 //region Preview
-@Preview("Normal detail screen")
+@Preview
 @Composable
 private fun DetailPreview_Normal() {
     RijksmuseumTheme {

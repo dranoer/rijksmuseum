@@ -10,7 +10,6 @@ import com.dranoer.rijksmuseum.networking.model.ArtImage
 import com.dranoer.rijksmuseum.networking.model.ArtItem
 import com.dranoer.rijksmuseum.networking.model.ArtObject
 import com.dranoer.rijksmuseum.networking.model.ArtResponse
-import com.dranoer.rijksmuseum.networking.model.DetailImage
 import com.dranoer.rijksmuseum.networking.model.DetailItem
 import com.dranoer.rijksmuseum.networking.model.DetailObject
 import com.dranoer.rijksmuseum.networking.model.DetailResponse
@@ -84,25 +83,9 @@ class ArtRepositoryTest {
         runBlocking {
             // GIVEN
             val objectNumber = "objectNumber"
-            val mockDetailItem = DetailItem(
-                id = "1",
-                artist = "Artist 1",
-                title = "Title 1",
-                description = "This is a description for artwork number 1",
-                imageUrl = "",
-            )
-            val mockArtDetailResponse = DetailResponse(
-                artDetail = DetailObject(
-                    id = "1",
-                    artist = "Artist 1",
-                    title = "Title 1",
-                    description = "This is a description for artwork number 1",
-                    image = DetailImage(
-                        guid = "guid",
-                        url = ""
-                    )
-                )
-            )
+            val mockDetailItem = mockk<DetailItem>()
+            val mockDetailObject = mockk<DetailObject>()
+            val mockArtDetailResponse = DetailResponse(mockDetailObject)
             coEvery { webService.fetchArtDetail(objectNumber) } returns mockArtDetailResponse
             every { detailMapper.map(any()) } returns mockDetailItem
 

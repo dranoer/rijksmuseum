@@ -44,15 +44,7 @@ class MainViewModelTest {
     fun `WHEN art data retrieved successfully THEN fetchArts updates overviewUiState to Success`() =
         runBlocking {
             // GIVEN
-            val mockArtItem = ArtItem(
-                id = "1",
-                objectNumber = "1",
-                artist = "Artist 1",
-                title = "Title 1",
-                description = "This is a description for artwork number 1",
-                imageUrl = "",
-                headerImageUrl = "",
-            )
+            val mockArtItem = mockk<ArtItem>()
             val mockPagingData = PagingData.from(listOf(mockArtItem))
             coEvery { repository.fetchArtList(any()) } returns flowOf(mockPagingData)
 
@@ -91,13 +83,7 @@ class MainViewModelTest {
         runBlocking {
             // GIVEN
             val objectNumber = "objectNumber"
-            val detailItem = DetailItem(
-                id = "1",
-                artist = "artist 1",
-                title = "title 1",
-                description = "Artwork",
-                imageUrl = "",
-            )
+            val detailItem = mockk<DetailItem>()
             coEvery { repository.fetchArtDetail(objectNumber) } returns detailItem
 
             // WHEN

@@ -22,7 +22,6 @@ import com.dranoer.rijksmuseum.R
 @Composable
 fun DetailCardView(
     modifier: Modifier = Modifier,
-    alpha: Float,
     artist: String?,
     title: String?,
     description: String?,
@@ -31,8 +30,11 @@ fun DetailCardView(
         modifier = modifier
             .fillMaxWidth()
             .aspectRatio(1f),
-        shape = RoundedCornerShape(topStart = dimensionResource(id = R.dimen.size_40), topEnd = dimensionResource(id = R.dimen.size_40)),
-        color = Color.White
+        shape = RoundedCornerShape(
+            topStart = dimensionResource(id = R.dimen.size_40),
+            topEnd = dimensionResource(id = R.dimen.size_40)
+        ),
+        color = Color.White,
     ) {
         Column(
             modifier = Modifier.padding(
@@ -74,12 +76,21 @@ fun DetailCardView(
 //region Preview
 @Preview
 @Composable
-private fun DetailCardPreview() =
+private fun DetailCardPreview_Normal() =
     DetailCardView(
         modifier = Modifier.requiredHeight(200.dp),
-        alpha = 40F,
         artist = "an artist!",
         title = "Title 1",
         description = "This is a description for this artwork."
+    )
+
+@Preview
+@Composable
+private fun DetailCardPreview_LongDescription() =
+    DetailCardView(
+        modifier = Modifier.requiredHeight(200.dp),
+        artist = "an artist!",
+        title = "Title 1",
+        description = "This is a very very very very very very very very very very very very very very very very very very very very very very long description for this artwork."
     )
 //endregion

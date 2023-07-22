@@ -133,4 +133,58 @@ private fun ArtViewPreview_NoItems() {
         ArtView(artGroup = artGroup, artItem = null, onItemClicked = {})
     }
 }
+
+@Preview
+@Composable
+private fun ArtViewPreview_EmptyGroup() {
+    RijksmuseumTheme {
+        ArtView(artGroup = null, artItem = null, onItemClicked = {})
+    }
+}
+
+@Preview
+@Composable
+private fun ArtViewPreview_LongAuthor() {
+    RijksmuseumTheme {
+        val artItem = ArtItem(
+            id = "1",
+            objectNumber = "1",
+            artist = "Artist 1",
+            title = "Title 1",
+            description = "This is a description for artwork number 1",
+            imageUrl = "",
+            headerImageUrl = ""
+        )
+        val artGroup = ArtGroup(
+            author = "This is a very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very long author name.",
+            artItems = listOf(artItem)
+        )
+
+        ArtView(artGroup = artGroup, artItem = artItem, onItemClicked = {})
+    }
+}
+
+@Preview
+@Composable
+private fun ArtViewPreview_Clickable() {
+    RijksmuseumTheme {
+        val artItem = ArtItem(
+            id = "1",
+            objectNumber = "1",
+            artist = "Artist 1",
+            title = "Title 1",
+            description = "This is a description for artwork number 1",
+            imageUrl = "",
+            headerImageUrl = ""
+        )
+        val artGroup = ArtGroup(
+            author = "Clickable",
+            artItems = listOf(artItem)
+        )
+
+        ArtView(artGroup = artGroup, artItem = artItem, onItemClicked = { clickedItem ->
+            println("Item clicked: ${clickedItem.title}")
+        })
+    }
+}
 //endregion

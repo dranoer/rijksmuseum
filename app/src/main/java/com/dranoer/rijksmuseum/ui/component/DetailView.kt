@@ -64,4 +64,52 @@ private fun HeaderView_Normal() {
         )
     }
 }
+
+@Preview
+@Composable
+private fun DetailViewPreview_EmptyArtist() {
+    RijksmuseumTheme() {
+        DetailView(
+            DetailItem(
+                id = "1",
+                artist = "",
+                title = "Title 1",
+                description = "This is a description for artwork number 1",
+                imageUrl = "",
+            )
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun DetailViewPreview_LongTitle() {
+    RijksmuseumTheme() {
+        DetailView(
+            DetailItem(
+                id = "1",
+                artist = "Artist 1",
+                title = "This is a very very very very very very very very very very long title for this artwork.",
+                description = "This is a description for artwork number 1",
+                imageUrl = "",
+            )
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun DetailViewPreview_LongDescription() {
+    RijksmuseumTheme() {
+        DetailView(
+            DetailItem(
+                id = "1",
+                artist = "Artist 1",
+                title = "Title 1",
+                description = "This is a very very very very very very very very very very very very very very very very very very very very long description for this artwork.",
+                imageUrl = "",
+            )
+        )
+    }
+}
 //endregion

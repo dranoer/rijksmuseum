@@ -39,7 +39,6 @@ fun DetailView(item: DetailItem) {
             //region Content
             DetailCardView(
                 modifier = Modifier.requiredHeight(dimensionResource(id = R.dimen.size_500)),
-                alpha = 1F,
                 artist = item.artist,
                 title = item.title,
                 description = item.description,

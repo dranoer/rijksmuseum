@@ -93,4 +93,54 @@ private fun DetailCardPreview_LongDescription() =
         title = "Title 1",
         description = "This is a very very very very very very very very very very very very very very very very very very very very very very long description for this artwork."
     )
+
+@Preview
+@Composable
+private fun DetailCardPreview_MissingArtist() =
+    DetailCardView(
+        modifier = Modifier.requiredHeight(200.dp),
+        artist = null,
+        title = "Title 1",
+        description = "This is a description for this artwork."
+    )
+
+@Preview
+@Composable
+private fun DetailCardPreview_LongArtistName() =
+    DetailCardView(
+        modifier = Modifier.requiredHeight(200.dp),
+        artist = "This is a very very very very very very very very very very very very very very long artist name.",
+        title = "Title 1",
+        description = "This is a description for this artwork."
+    )
+
+@Preview
+@Composable
+private fun DetailCardPreview_MissingTitle() =
+    DetailCardView(
+        modifier = Modifier.requiredHeight(200.dp),
+        artist = "an artist!",
+        title = null,
+        description = "This is a description for this artwork."
+    )
+
+@Preview
+@Composable
+private fun DetailCardPreview_LongTitle() =
+    DetailCardView(
+        modifier = Modifier.requiredHeight(200.dp),
+        artist = "an artist!",
+        title = "This is a very very very very very very very very very very very very very very very long title for this artwork.",
+        description = "This is a description for this artwork."
+    )
+
+@Preview
+@Composable
+private fun DetailCardPreview_MissingDescription() =
+    DetailCardView(
+        modifier = Modifier.requiredHeight(200.dp),
+        artist = "an artist!",
+        title = "Title 1",
+        description = null
+    )
 //endregion

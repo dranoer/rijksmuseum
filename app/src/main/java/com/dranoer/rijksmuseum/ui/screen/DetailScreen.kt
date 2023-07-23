@@ -107,4 +107,40 @@ private fun DetailPreview_Normal() {
         DetailScreen(id = "1", viewModel = hiltViewModel(), backPress = {})
     }
 }
+
+@Preview
+@Composable
+private fun DetailScreenPreview_Loading() {
+    RijksmuseumTheme {
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center,
+        ) {
+            CircularProgressIndicator()
+        }
+    }
+}
+
+@Preview
+@Composable
+private fun DetailScreenPreview_Error() {
+    RijksmuseumTheme {
+        Text(text = "Error: Something went wrong")
+    }
+}
+
+@Preview
+@Composable
+private fun DetailScreenPreview_Loaded() {
+    RijksmuseumTheme {
+        val mockDetailItem = DetailItem(
+            id = "1",
+            artist = "Artist 1",
+            title = "Title 1",
+            description = "This is a description for artwork number 1",
+            imageUrl = ""
+        )
+        LoadedDetailScreen(detail = mockDetailItem, backPress = {})
+    }
+}
 //endregion

@@ -212,4 +212,30 @@ private fun OverviewNonPaged(
         }
     }
 }
+
+@Preview
+@Composable
+private fun OverviewPreview_Loading() {
+    RijksmuseumTheme {
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center,
+        ) {
+            CircularProgressIndicator()
+        }
+    }
+}
+
+@Preview
+@Composable
+private fun OverviewPreview_Error() {
+    RijksmuseumTheme {
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center,
+        ) {
+            Text(text = "Error: Something went wrong")
+        }
+    }
+}
 //endregion
